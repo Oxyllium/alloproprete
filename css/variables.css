@@ -42,9 +42,9 @@
 
     /* ===== TYPOGRAPHIE ===== */
 
-    /* Fonts */
-    --font-heading: 'DM Serif Display', Georgia, serif;
-    --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Fonts - Space Grotesk: moderne, géométrique, tech */
+    --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
 
     /* Tailles */
     --text-xs: 0.75rem;      /* 12px */

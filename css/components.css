@@ -49,8 +49,9 @@
 .logo__text {
     font-family: var(--font-heading);
     font-size: var(--text-xl);
+    font-weight: 700;
     color: var(--color-primary);
-    letter-spacing: var(--tracking-tight);
+    letter-spacing: -0.02em;
 }
 
 .logo__text span {
