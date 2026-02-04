@@ -42,9 +42,9 @@
 
     /* ===== TYPOGRAPHIE ===== */
 
-    /* Fonts - Space Grotesk: moderne, géométrique, tech */
-    --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-body: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Fonts - Inter: clean, professionnel, lisible */
+    --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
 
     /* Tailles */
     --text-xs: 0.75rem;      /* 12px */
