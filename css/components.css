@@ -406,16 +406,14 @@
 
 /* Primary button (CTA) */
 .btn--primary {
-    background: var(--color-accent);
+    background: var(--color-secondary);
     color: var(--color-white);
-    border-color: var(--color-accent);
+    border-color: var(--color-secondary);
 }
 
 .btn--primary:hover {
-    background: var(--color-accent-dark);
-    border-color: var(--color-accent-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    background: var(--color-secondary-dark);
+    border-color: var(--color-secondary-dark);
 }
 
 /* Secondary button */
@@ -426,20 +424,20 @@
 }
 
 .btn--secondary:hover {
-    background: var(--color-primary-light);
-    border-color: var(--color-primary-light);
+    background: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
 }
 
 /* Outline button */
 .btn--outline {
     background: transparent;
     color: var(--color-primary);
-    border-color: var(--color-primary);
+    border-color: var(--color-gray-300);
 }
 
 .btn--outline:hover {
-    background: var(--color-primary);
-    color: var(--color-white);
+    border-color: var(--color-primary);
+    background: var(--color-gray-50);
 }
 
 /* Ghost button */
