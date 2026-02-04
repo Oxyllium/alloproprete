@@ -1,0 +1,13 @@
+# Robots.txt for alloproprete.fr
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://alloproprete.fr/sitemap.xml
+
+# Disallow admin/private areas (none currently)
+# Disallow: /admin/
+
+# Crawl delay (optional, be nice to bots)
+Crawl-delay: 1

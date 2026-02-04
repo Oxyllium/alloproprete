@@ -1,0 +1,266 @@
+/* ==========================================================================
+   ALLOPROPRETE - Layout System
+   ========================================================================== */
+
+/* ===== CONTAINER ===== */
+
+.container {
+    width: 100%;
+    max-width: var(--container-xl);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+}
+
+.container--narrow {
+    max-width: var(--container-md);
+}
+
+.container--wide {
+    max-width: var(--container-2xl);
+}
+
+/* ===== SECTIONS ===== */
+
+.section {
+    padding-top: var(--section-spacing);
+    padding-bottom: var(--section-spacing);
+}
+
+.section--compact {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+}
+
+.section--flush {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* Section backgrounds */
+.section--white {
+    background-color: var(--color-white);
+}
+
+.section--primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.section--primary h2,
+.section--primary h3 {
+    color: var(--color-white);
+}
+
+.section--light {
+    background-color: var(--color-gray-50);
+}
+
+/* ===== GRID SYSTEM ===== */
+
+.grid {
+    display: grid;
+    gap: var(--space-8);
+}
+
+.grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Asymmetric grids */
+.grid--sidebar-left {
+    grid-template-columns: 300px 1fr;
+}
+
+.grid--sidebar-right {
+    grid-template-columns: 1fr 350px;
+}
+
+.grid--content-heavy {
+    grid-template-columns: 2fr 1fr;
+}
+
+/* Grid alignments */
+.grid--center {
+    align-items: center;
+}
+
+.grid--start {
+    align-items: start;
+}
+
+/* ===== FLEX UTILITIES ===== */
+
+.flex {
+    display: flex;
+}
+
+.flex--col {
+    flex-direction: column;
+}
+
+.flex--wrap {
+    flex-wrap: wrap;
+}
+
+.flex--center {
+    justify-content: center;
+    align-items: center;
+}
+
+.flex--between {
+    justify-content: space-between;
+}
+
+.flex--gap-sm {
+    gap: var(--space-4);
+}
+
+.flex--gap {
+    gap: var(--space-6);
+}
+
+.flex--gap-lg {
+    gap: var(--space-8);
+}
+
+/* ===== FLOW (vertical rhythm) ===== */
+
+.flow > * + * {
+    margin-top: var(--flow-space, var(--space-4));
+}
+
+.flow--lg > * + * {
+    margin-top: var(--space-8);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 1024px) {
+    .grid--3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid--4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid--sidebar-left,
+    .grid--sidebar-right,
+    .grid--content-heavy {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid--2,
+    .grid--3,
+    .grid--4 {
+        grid-template-columns: 1fr;
+    }
+
+    .section {
+        padding-top: var(--space-16);
+        padding-bottom: var(--space-16);
+    }
+}
+
+/* ===== MAIN LAYOUT ===== */
+
+.site-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.site-main {
+    flex: 1;
+}
+
+/* Padding for sticky header */
+.site-main {
+    padding-top: 80px;
+}
+
+@media (max-width: 768px) {
+    .site-main {
+        padding-top: 70px;
+        padding-bottom: 72px; /* Space for mobile sticky bar */
+    }
+}
+
+/* ===== TWO COLUMN LAYOUTS ===== */
+
+.split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: center;
+}
+
+.split--reverse {
+    direction: rtl;
+}
+
+.split--reverse > * {
+    direction: ltr;
+}
+
+.split__content {
+    --flow-space: var(--space-6);
+}
+
+.split__visual {
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .split {
+        grid-template-columns: 1fr;
+        gap: var(--space-10);
+    }
+
+    .split--reverse {
+        direction: ltr;
+    }
+}
+
+/* ===== OFFSET LAYOUTS ===== */
+
+.offset-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-6);
+}
+
+.offset-grid__item--wide {
+    grid-column: span 7;
+}
+
+.offset-grid__item--narrow {
+    grid-column: span 5;
+}
+
+.offset-grid__item--push {
+    grid-column-start: 2;
+}
+
+@media (max-width: 768px) {
+    .offset-grid__item--wide,
+    .offset-grid__item--narrow {
+        grid-column: span 12;
+    }
+
+    .offset-grid__item--push {
+        grid-column-start: 1;
+    }
+}

@@ -1,0 +1,204 @@
+/* ==========================================================================
+   ALLOPROPRETE - Base Styles
+   ========================================================================== */
+
+/* ===== FONTS ===== */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* ===== BODY ===== */
+
+body {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: 400;
+    color: var(--color-text);
+    background-color: var(--color-off-white);
+    line-height: var(--leading-relaxed);
+}
+
+/* ===== TYPOGRAPHY ===== */
+
+h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    line-height: var(--leading-tight);
+    color: var(--color-primary);
+    letter-spacing: var(--tracking-tight);
+}
+
+h1 {
+    font-size: var(--text-5xl);
+}
+
+h2 {
+    font-size: var(--text-4xl);
+}
+
+h3 {
+    font-size: var(--text-2xl);
+}
+
+h4 {
+    font-size: var(--text-xl);
+}
+
+p {
+    margin-bottom: var(--space-4);
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+strong, b {
+    font-weight: 600;
+}
+
+em, i {
+    font-style: italic;
+}
+
+small {
+    font-size: var(--text-sm);
+}
+
+/* ===== LINKS ===== */
+
+a {
+    color: var(--color-secondary);
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+a:hover {
+    color: var(--color-secondary-dark);
+}
+
+a:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+/* ===== LISTS (when styled) ===== */
+
+.prose ul,
+.prose ol {
+    margin: var(--space-4) 0;
+    padding-left: var(--space-6);
+}
+
+.prose ul {
+    list-style-type: disc;
+}
+
+.prose ol {
+    list-style-type: decimal;
+}
+
+.prose li {
+    margin-bottom: var(--space-2);
+}
+
+.prose li::marker {
+    color: var(--color-secondary);
+}
+
+/* ===== SELECTION ===== */
+
+::selection {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+}
+
+/* ===== FOCUS STYLES ===== */
+
+:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+}
+
+/* ===== SCROLLBAR ===== */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-gray-400);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gray-500);
+}
+
+/* ===== HR ===== */
+
+hr {
+    border: none;
+    height: 1px;
+    background: var(--color-gray-200);
+    margin: var(--space-8) 0;
+}
+
+/* ===== BLOCKQUOTE ===== */
+
+blockquote {
+    border-left: 4px solid var(--color-secondary);
+    padding-left: var(--space-6);
+    margin: var(--space-6) 0;
+    font-style: italic;
+    color: var(--color-gray-700);
+}
+
+/* ===== CODE ===== */
+
+code {
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 0.9em;
+    background: var(--color-gray-100);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+}
+
+/* ===== TABLES (when used) ===== */
+
+table {
+    width: 100%;
+    margin: var(--space-6) 0;
+}
+
+th, td {
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    border-bottom: 1px solid var(--color-gray-200);
+}
+
+th {
+    font-weight: 600;
+    color: var(--color-primary);
+    background: var(--color-gray-50);
+}
+
+/* ===== IMAGES ===== */
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+figure {
+    margin: var(--space-6) 0;
+}
+
+figcaption {
+    font-size: var(--text-sm);
+    color: var(--color-gray-500);
+    margin-top: var(--space-2);
+}
