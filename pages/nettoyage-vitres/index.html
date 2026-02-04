@@ -93,15 +93,66 @@
     </header>
 
     <main id="main" class="site-main">
-        <section class="hero hero--page">
+        <section class="hero hero--service">
             <div class="container">
-                <nav class="breadcrumb" aria-label="Fil d'Ariane">
-                    <ol class="breadcrumb__list">
-                        <li class="breadcrumb__item"><a href="/" class="breadcrumb__link">Accueil</a></li>
-                        <li class="breadcrumb__item"><span class="breadcrumb__current" aria-current="page">Nettoyage de Vitres</span></li>
-                    </ol>
-                </nav>
-                <h1 class="hero__title">Nettoyage de vitres<br>en Île-de-France</h1>
+                <div class="hero--service__inner">
+                    <div class="hero--service__content">
+                        <nav class="breadcrumb" aria-label="Fil d'Ariane">
+                            <ol class="breadcrumb__list">
+                                <li class="breadcrumb__item"><a href="/" class="breadcrumb__link">Accueil</a></li>
+                                <li class="breadcrumb__item"><span class="breadcrumb__current" aria-current="page">Nettoyage de Vitres</span></li>
+                            </ol>
+                        </nav>
+                        <h1 class="hero__title">Nettoyage de vitres<br>en Île-de-France</h1>
+                        <p class="hero__subtitle">Vitres, baies vitrées, vérandas. Techniques professionnelles pour un résultat sans traces.</p>
+                        <div class="hero__ctas">
+                            <a href="/pages/devis-nettoyage.html" class="btn btn--primary btn--lg" data-cta="hero-devis">Devis gratuit en 24h</a>
+                            <a href="#methode" class="btn btn--outline-light">Notre méthode</a>
+                        </div>
+                        <div class="hero__badges">
+                            <div class="hero__badge">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                <span>Résultat garanti sans traces</span>
+                            </div>
+                            <div class="hero__badge">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                <span>Perches jusqu'à 12m</span>
+                            </div>
+                            <div class="hero__badge">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                <span>Produits professionnels</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero--service__card">
+                        <div class="hero--service__card-header">
+                            <span class="hero--service__card-label">À partir de</span>
+                            <div class="hero--service__card-price">
+                                <span class="hero--service__card-amount">5€</span>
+                                <span class="hero--service__card-unit">/m² de vitrage</span>
+                            </div>
+                        </div>
+                        <ul class="hero--service__card-features">
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Intérieur + extérieur
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Technique raclette pro
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Encadrements nettoyés
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                Contrat entretien possible
+                            </li>
+                        </ul>
+                        <a href="/pages/devis-nettoyage.html" class="btn btn--primary btn--full" data-cta="hero-card-devis">Demander un devis</a>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -124,7 +175,7 @@
             </div>
         </section>
 
-        <section class="section section--light">
+        <section id="methode" class="section section--light">
             <div class="container">
                 <header class="section__header" style="text-align: center; max-width: 600px; margin: 0 auto var(--space-12);">
                     <h2>Notre méthode d'intervention</h2>
