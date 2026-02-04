@@ -1,92 +1,76 @@
 /* ==========================================================================
-   ALLOPROPRETE - Design System Premium
-   Direction: Corporate Authority / Enterprise Trust
+   ALLOPROPRETE - Design Tokens
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap');
-
 :root {
-    /* ===== COULEURS PREMIUM ===== */
+    /* ===== COULEURS ===== */
 
-    /* Primaire - Charbon profond (autorité, sophistication) */
-    --color-primary: #0a0f1c;
-    --color-primary-light: #1a2235;
-    --color-primary-dark: #050810;
-    --color-primary-rgb: 10, 15, 28;
+    /* Primaire - Bleu profond (confiance, professionnalisme) */
+    --color-primary: #1a365d;
+    --color-primary-light: #2d4a7c;
+    --color-primary-dark: #122544;
 
-    /* Secondaire - Teal sophistiqué (modernité, fiabilité) */
-    --color-secondary: #0d9488;
-    --color-secondary-light: #14b8a6;
-    --color-secondary-dark: #0f766e;
-    --color-secondary-rgb: 13, 148, 136;
+    /* Secondaire - Vert émeraude (propreté, fraîcheur) */
+    --color-secondary: #059669;
+    --color-secondary-light: #10b981;
+    --color-secondary-dark: #047857;
 
-    /* Accent - Or chaud (premium, confiance, établi) */
-    --color-accent: #c9a227;
-    --color-accent-light: #dbb94d;
-    --color-accent-dark: #a68619;
-    --color-accent-rgb: 201, 162, 39;
+    /* Accent - Orange (CTA, urgence) */
+    --color-accent: #ea580c;
+    --color-accent-light: #f97316;
+    --color-accent-dark: #c2410c;
 
-    /* Neutres raffinés */
+    /* Neutres */
     --color-white: #ffffff;
-    --color-off-white: #f8f7f4;
-    --color-cream: #f3f1eb;
-    --color-gray-50: #fafaf9;
-    --color-gray-100: #f0eeeb;
-    --color-gray-200: #e2e0db;
-    --color-gray-300: #c8c5be;
-    --color-gray-400: #9c9890;
-    --color-gray-500: #6b6860;
-    --color-gray-600: #4a4842;
-    --color-gray-700: #33312c;
-    --color-gray-800: #1f1d1a;
-    --color-gray-900: #0d0c0a;
-    --color-text: #1a1815;
-    --color-text-secondary: #5c5850;
+    --color-off-white: #fafaf9;
+    --color-gray-50: #f8fafc;
+    --color-gray-100: #f1f5f9;
+    --color-gray-200: #e2e8f0;
+    --color-gray-300: #cbd5e1;
+    --color-gray-400: #94a3b8;
+    --color-gray-500: #64748b;
+    --color-gray-600: #475569;
+    --color-gray-700: #334155;
+    --color-gray-800: #1e293b;
+    --color-gray-900: #0f172a;
+    --color-text: #1c1917;
 
     /* Feedback */
-    --color-success: #059669;
+    --color-success: #16a34a;
     --color-error: #dc2626;
     --color-warning: #d97706;
-    --color-info: #0284c7;
 
-    /* ===== TYPOGRAPHIE AUTORITAIRE ===== */
+    /* ===== TYPOGRAPHIE ===== */
 
-    /*
-     * Newsreader: Sérieuse, éditoriale, établie - pour les titres
-     * Instrument Sans: Moderne, géométrique, professionnelle - pour le corps
-     */
-    --font-heading: 'Newsreader', 'Times New Roman', serif;
-    --font-body: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Fonts */
+    --font-heading: 'DM Serif Display', Georgia, serif;
+    --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
 
-    /* Tailles optimisées pour l'impact */
+    /* Tailles */
     --text-xs: 0.75rem;      /* 12px */
-    --text-sm: 0.8125rem;    /* 13px */
-    --text-base: 0.9375rem;  /* 15px */
-    --text-md: 1rem;         /* 16px */
+    --text-sm: 0.875rem;     /* 14px */
+    --text-base: 1rem;       /* 16px */
     --text-lg: 1.125rem;     /* 18px */
     --text-xl: 1.25rem;      /* 20px */
     --text-2xl: 1.5rem;      /* 24px */
-    --text-3xl: 2rem;        /* 32px */
-    --text-4xl: 2.5rem;      /* 40px */
-    --text-5xl: 3.25rem;     /* 52px */
-    --text-6xl: 4rem;        /* 64px */
-    --text-7xl: 5rem;        /* 80px */
-    --text-8xl: 6.5rem;      /* 104px */
+    --text-3xl: 1.875rem;    /* 30px */
+    --text-4xl: 2.25rem;     /* 36px */
+    --text-5xl: 3rem;        /* 48px */
+    --text-6xl: 3.75rem;     /* 60px */
+    --text-7xl: 4.5rem;      /* 72px */
 
-    /* Line heights précises */
+    /* Line heights */
     --leading-none: 1;
-    --leading-tight: 1.1;
-    --leading-snug: 1.25;
+    --leading-tight: 1.15;
+    --leading-snug: 1.3;
     --leading-normal: 1.5;
-    --leading-relaxed: 1.7;
+    --leading-relaxed: 1.65;
 
     /* Letter spacing */
-    --tracking-tighter: -0.03em;
-    --tracking-tight: -0.015em;
+    --tracking-tight: -0.02em;
     --tracking-normal: 0;
-    --tracking-wide: 0.025em;
+    --tracking-wide: 0.02em;
     --tracking-wider: 0.05em;
-    --tracking-widest: 0.1em;
 
     /* ===== ESPACEMENTS ===== */
 
@@ -99,125 +83,63 @@
     --space-8: 2rem;         /* 32px */
     --space-10: 2.5rem;      /* 40px */
     --space-12: 3rem;        /* 48px */
-    --space-14: 3.5rem;      /* 56px */
     --space-16: 4rem;        /* 64px */
     --space-20: 5rem;        /* 80px */
     --space-24: 6rem;        /* 96px */
     --space-32: 8rem;        /* 128px */
-    --space-40: 10rem;       /* 160px */
-    --space-48: 12rem;       /* 192px */
 
     /* ===== LAYOUT ===== */
 
-    --container-xs: 540px;
-    --container-sm: 720px;
-    --container-md: 960px;
-    --container-lg: 1140px;
-    --container-xl: 1320px;
-    --container-2xl: 1536px;
+    --container-sm: 640px;
+    --container-md: 768px;
+    --container-lg: 1024px;
+    --container-xl: 1200px;
+    --container-2xl: 1400px;
 
     --gutter: var(--space-6);
-    --gutter-lg: var(--space-10);
-    --section-spacing: var(--space-32);
-    --section-spacing-lg: var(--space-40);
+    --section-spacing: var(--space-24);
 
-    /* ===== BORDURES & OMBRES PREMIUM ===== */
+    /* ===== BORDURES & OMBRES ===== */
 
-    --radius-sm: 2px;
-    --radius-md: 4px;
-    --radius-lg: 8px;
-    --radius-xl: 12px;
-    --radius-2xl: 16px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 24px;
     --radius-full: 9999px;
 
-    /* Ombres subtiles et élégantes */
-    --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.04);
-    --shadow-sm: 0 2px 4px rgb(0 0 0 / 0.04), 0 1px 2px rgb(0 0 0 / 0.06);
-    --shadow-md: 0 4px 8px rgb(0 0 0 / 0.04), 0 2px 4px rgb(0 0 0 / 0.06);
-    --shadow-lg: 0 12px 24px rgb(0 0 0 / 0.06), 0 4px 8px rgb(0 0 0 / 0.04);
-    --shadow-xl: 0 20px 40px rgb(0 0 0 / 0.08), 0 8px 16px rgb(0 0 0 / 0.04);
-    --shadow-2xl: 0 32px 64px rgb(0 0 0 / 0.12), 0 16px 32px rgb(0 0 0 / 0.06);
-
-    /* Ombres colorées pour les CTAs */
-    --shadow-accent: 0 8px 24px rgb(var(--color-accent-rgb) / 0.35);
-    --shadow-secondary: 0 8px 24px rgb(var(--color-secondary-rgb) / 0.25);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 
     /* ===== TRANSITIONS ===== */
 
-    --duration-instant: 100ms;
-    --duration-fast: 200ms;
-    --duration-normal: 350ms;
-    --duration-slow: 500ms;
-    --duration-slower: 700ms;
-
-    /* Easings sophistiqués */
-    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-fast: 150ms;
+    --duration-normal: 250ms;
+    --duration-slow: 400ms;
+    --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     /* ===== Z-INDEX ===== */
 
-    --z-base: 1;
     --z-dropdown: 100;
     --z-sticky: 200;
     --z-fixed: 300;
-    --z-overlay: 400;
+    --z-modal-backdrop: 400;
     --z-modal: 500;
     --z-toast: 600;
-    --z-max: 9999;
-
-    /* ===== EFFETS SPÉCIAUX ===== */
-
-    --gradient-dark: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
-    --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
-    --gradient-secondary: linear-gradient(135deg, var(--color-secondary-dark) 0%, var(--color-secondary) 100%);
-    --gradient-premium: linear-gradient(135deg, #0a0f1c 0%, #1a2235 50%, #0d9488 100%);
-
-    --noise-opacity: 0.03;
-    --grain-url: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-
-    /* ===== HEADER ===== */
-    --header-height: 88px;
-    --header-height-scrolled: 72px;
 }
 
-/* ===== RESPONSIVE ===== */
-
-@media (max-width: 1024px) {
-    :root {
-        --text-5xl: 2.75rem;
-        --text-6xl: 3.25rem;
-        --text-7xl: 4rem;
-        --text-8xl: 5rem;
-        --section-spacing: var(--space-24);
-        --section-spacing-lg: var(--space-32);
-    }
-}
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
 
 @media (max-width: 768px) {
     :root {
-        --text-4xl: 2rem;
-        --text-5xl: 2.25rem;
-        --text-6xl: 2.75rem;
-        --text-7xl: 3.25rem;
-        --text-8xl: 4rem;
-        --section-spacing: var(--space-20);
-        --section-spacing-lg: var(--space-24);
+        --text-5xl: 2.5rem;
+        --text-6xl: 3rem;
+        --text-7xl: 3.5rem;
+        --section-spacing: var(--space-16);
         --gutter: var(--space-4);
-        --gutter-lg: var(--space-6);
-        --header-height: 72px;
-        --header-height-scrolled: 64px;
-    }
-}
-
-@media (max-width: 480px) {
-    :root {
-        --text-3xl: 1.75rem;
-        --text-4xl: 1.875rem;
-        --text-5xl: 2rem;
-        --text-6xl: 2.25rem;
-        --text-7xl: 2.75rem;
-        --text-8xl: 3.25rem;
     }
 }
