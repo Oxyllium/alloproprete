@@ -767,6 +767,21 @@
     transform: translateX(4px);
 }
 
+/* Service card mobile */
+@media (max-width: 768px) {
+    .service-card__image {
+        height: 160px;
+    }
+
+    .service-card__body {
+        padding: var(--space-4);
+    }
+
+    .service-card__title {
+        font-size: var(--text-lg);
+    }
+}
+
 /* ===== TESTIMONIALS ===== */
 
 .testimonial {
@@ -990,18 +1005,19 @@
     right: 0;
     z-index: var(--z-fixed);
     background: var(--color-white);
-    padding: var(--space-3) var(--space-4);
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    padding: var(--space-4) var(--space-5);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .mobile-sticky-bar .btn {
-    flex: 1;
+    width: 100%;
+    font-size: var(--text-lg);
+    padding: var(--space-4) var(--space-6);
 }
 
 @media (max-width: 768px) {
     .mobile-sticky-bar {
-        display: flex;
-        gap: var(--space-3);
+        display: block;
     }
 }
 
