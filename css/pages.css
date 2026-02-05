@@ -38,7 +38,7 @@
 
 .hero__grid {
     display: grid;
-    grid-template-columns: 1fr 55%;
+    grid-template-columns: 45% 55%;
     gap: 0;
     align-items: center;
     position: relative;
@@ -46,9 +46,8 @@
 }
 
 .hero__content {
-    padding-right: var(--space-12);
+    padding-right: var(--space-8);
     padding-left: max(var(--gutter), calc((100vw - var(--container-xl)) / 2 + var(--gutter)));
-    max-width: 600px;
 }
 
 /* Hero Visual - Image Container */
@@ -76,9 +75,16 @@
 }
 
 /* Responsive Hero Grid */
+@media (max-width: 1280px) {
+    .hero__grid {
+        grid-template-columns: 50% 50%;
+    }
+}
+
 @media (max-width: 1024px) {
     .hero--home .container {
         padding-right: var(--space-4);
+        padding-left: var(--space-4);
     }
 
     .hero__grid {
@@ -87,8 +93,7 @@
     }
 
     .hero__content {
-        padding: 0 var(--space-4);
-        max-width: 100%;
+        padding: 0;
         text-align: center;
     }
 
