@@ -152,7 +152,11 @@
                                 <h2>Demandez votre devis</h2>
                                 <p>Remplissez ce formulaire, nous vous recontactons</p>
                             </div>
-                            <form class="devis-form-card__body" data-form-id="devis-main">
+                            <form class="devis-form-card__body" name="devis" method="POST" action="/pages/merci.html" data-netlify="true" netlify-honeypot="bot-field">
+                                <input type="hidden" name="form-name" value="devis">
+                                <p class="hidden" style="display:none;">
+                                    <label>Ne pas remplir si vous êtes humain: <input name="bot-field"></label>
+                                </p>
                                 <div class="form-row">
                                     <div class="form-field">
                                         <label for="nom">Nom *</label>

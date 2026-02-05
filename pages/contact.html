@@ -199,7 +199,11 @@
                         <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-2);">Envoyez-nous un message</h2>
                         <p style="color: var(--color-gray-500); font-size: var(--text-sm); margin-bottom: var(--space-6);">Tous les champs sont obligatoires</p>
 
-                        <form class="form flow" data-form-id="contact">
+                        <form class="form flow" name="contact" method="POST" action="/pages/merci.html" data-netlify="true" netlify-honeypot="bot-field">
+                            <input type="hidden" name="form-name" value="contact">
+                            <p class="hidden" style="display:none;">
+                                <label>Ne pas remplir si vous êtes humain: <input name="bot-field"></label>
+                            </p>
                             <div class="form__row">
                                 <div class="form__group">
                                     <label for="nom" class="form__label form__label--required">Nom</label>
