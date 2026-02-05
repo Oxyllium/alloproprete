@@ -1,0 +1,49 @@
+# Netlify Redirects
+# https://docs.netlify.com/routing/redirects/
+
+# Redirections SEO - URLs canoniques sans .html
+/devis                      /pages/devis-nettoyage.html     200
+/devis-nettoyage            /pages/devis-nettoyage.html     200
+/contact                    /pages/contact.html             200
+/qui-sommes-nous            /pages/qui-sommes-nous.html     200
+/a-propos                   /pages/qui-sommes-nous.html     301
+/mentions-legales           /pages/mentions-legales.html    200
+/confidentialite            /pages/politique-de-confidentialite.html  200
+
+# Services - URLs courtes
+/nettoyage-fin-de-chantier          /pages/nettoyage-fin-de-chantier/     200
+/fin-de-chantier                    /pages/nettoyage-fin-de-chantier/     301
+/nettoyage-etat-des-lieux           /pages/nettoyage-avant-etat-des-lieux/  200
+/etat-des-lieux                     /pages/nettoyage-avant-etat-des-lieux/  301
+/entretien-bureaux                  /pages/entretien-bureaux/             200
+/bureaux                            /pages/entretien-bureaux/             301
+/nettoyage-copropriete              /pages/nettoyage-copropriete/         200
+/copropriete                        /pages/nettoyage-copropriete/         301
+/nettoyage-locaux-commerciaux       /pages/nettoyage-locaux-commerciaux/  200
+/locaux-commerciaux                 /pages/nettoyage-locaux-commerciaux/  301
+/nettoyage-industriel               /pages/nettoyage-industriel/          200
+/industriel                         /pages/nettoyage-industriel/          301
+/nettoyage-vitres                   /pages/nettoyage-vitres/              200
+/vitres                             /pages/nettoyage-vitres/              301
+/remise-en-etat                     /pages/remise-en-etat/                200
+
+# Zones géographiques - URLs courtes
+/paris                      /pages/nettoyage-paris.html                 200
+/nettoyage-paris            /pages/nettoyage-paris.html                 200
+/val-doise                  /pages/nettoyage-val-doise-95.html          200
+/95                         /pages/nettoyage-val-doise-95.html          301
+/essonne                    /pages/nettoyage-essonne-91.html            200
+/91                         /pages/nettoyage-essonne-91.html            301
+/seine-et-marne             /pages/nettoyage-seine-et-marne-77.html     200
+/77                         /pages/nettoyage-seine-et-marne-77.html     301
+
+# Page merci - URL propre
+/merci                      /pages/merci.html               200
+
+# Anciens URLs ou erreurs courantes (301 = permanent)
+/services                   /                               301
+/accueil                    /                               301
+/home                       /                               301
+
+# SPA fallback - 404 page (optionnel)
+# /*                        /404.html                       404
