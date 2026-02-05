@@ -31,70 +31,78 @@
 }
 
 /* Hero Grid Layout */
+.hero--home .container {
+    max-width: 100%;
+    padding-right: 0;
+}
+
 .hero__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-12);
+    grid-template-columns: 1fr 55%;
+    gap: 0;
     align-items: center;
     position: relative;
     z-index: 1;
 }
 
+.hero__content {
+    padding-right: var(--space-12);
+    padding-left: max(var(--gutter), calc((100vw - var(--container-xl)) / 2 + var(--gutter)));
+    max-width: 600px;
+}
+
 /* Hero Visual - Image Container */
 .hero__visual {
     position: relative;
-    display: flex;
-    justify-content: flex-end;
+    height: 100%;
+    min-height: 500px;
 }
 
 .hero__image-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 520px;
-    aspect-ratio: 4 / 3;
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-    overflow: hidden;
-    box-shadow:
-        0 25px 50px -12px rgba(0, 0, 0, 0.15),
-        0 0 0 8px rgba(255, 255, 255, 0.8),
-        0 0 0 16px rgba(5, 150, 105, 0.1);
-}
-
-.hero__image-wrapper::before {
-    content: '';
     position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, transparent 50%);
-    z-index: 1;
-    pointer-events: none;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    clip-path: ellipse(95% 100% at 100% 50%);
+    overflow: hidden;
 }
 
 .hero__image-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
-}
-
-.hero__image-wrapper:hover img {
-    transform: scale(1.05);
 }
 
 /* Responsive Hero Grid */
 @media (max-width: 1024px) {
+    .hero--home .container {
+        padding-right: var(--space-4);
+    }
+
     .hero__grid {
         grid-template-columns: 1fr;
-        gap: var(--space-10);
+        gap: var(--space-8);
+    }
+
+    .hero__content {
+        padding: 0 var(--space-4);
+        max-width: 100%;
         text-align: center;
     }
 
     .hero__visual {
-        justify-content: center;
-        order: -1;
+        min-height: 350px;
+        width: 100%;
+        margin-left: auto;
+        margin-right: 0;
     }
 
     .hero__image-wrapper {
-        max-width: 400px;
+        clip-path: ellipse(100% 85% at 50% 100%);
+        position: relative;
+        height: 350px;
     }
 
     .hero__ctas {
@@ -107,9 +115,12 @@
 }
 
 @media (max-width: 640px) {
+    .hero__visual {
+        min-height: 280px;
+    }
+
     .hero__image-wrapper {
-        max-width: 300px;
-        border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+        height: 280px;
     }
 }
 
