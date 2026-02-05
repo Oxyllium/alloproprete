@@ -1,6 +1,6 @@
 # AlloPropreté - Site Vitrine
 
-Site vitrine pour AlloPropreté, entreprise de nettoyage professionnel en Île-de-France.
+Site vitrine pour AlloPropreté, entreprise de nettoyage professionnel partout en France.
 
 ## Structure du projet
 
