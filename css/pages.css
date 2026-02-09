@@ -372,6 +372,18 @@
     }
 }
 
+/* Hero background image (shared by local + service heroes) */
+.hero__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.18;
+}
+
 /* Local/geo pages hero (sans card) */
 .hero--local {
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
