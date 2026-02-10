@@ -1,6 +1,9 @@
 # Netlify Redirects
 # https://docs.netlify.com/routing/redirects/
 
+# Admin
+/admin                      /admin/index.html               200
+
 # Redirections SEO - URLs canoniques sans .html
 /devis                      /pages/devis-nettoyage.html     200
 /devis-nettoyage            /pages/devis-nettoyage.html     200

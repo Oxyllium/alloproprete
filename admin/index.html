@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin | AlloPropreté</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; color: #1e293b; min-height: 100vh; }
+
+        /* Header */
+        .header { background: #1a365d; color: #fff; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+        .header h1 { font-size: 18px; font-weight: 600; }
+        .header h1 span { color: #10b981; }
+        .header__logout { background: rgba(255,255,255,0.15); border: none; color: #fff; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; }
+        .header__logout:hover { background: rgba(255,255,255,0.25); }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 0; background: #fff; border-bottom: 2px solid #e2e8f0; padding: 0 24px; }
+        .tab { padding: 14px 24px; font-size: 14px; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+        .tab:hover { color: #1a365d; }
+        .tab--active { color: #059669; border-bottom-color: #059669; }
+
+        /* Content */
+        .content { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+        /* Stats */
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .stat { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; }
+        .stat__number { font-size: 28px; font-weight: 700; color: #1a365d; }
+        .stat__label { font-size: 13px; color: #64748b; margin-top: 4px; }
+        .stat--nouveau .stat__number { color: #f59e0b; }
+        .stat--approuve .stat__number { color: #059669; }
+        .stat--rejete .stat__number { color: #dc2626; }
+
+        /* Table */
+        .table-wrap { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
+        .table-header { padding: 16px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .table-header h2 { font-size: 16px; font-weight: 600; }
+        .filter-group { display: flex; gap: 8px; }
+        .filter-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; font-size: 13px; cursor: pointer; color: #64748b; }
+        .filter-btn:hover, .filter-btn--active { background: #1a365d; color: #fff; border-color: #1a365d; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 12px 16px; font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #e2e8f0; background: #f8fafc; }
+        td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+        tr:hover td { background: #f8fafc; }
+
+        /* Badges */
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge--nouveau { background: #fef3c7; color: #92400e; }
+        .badge--approuve { background: #d1fae5; color: #065f46; }
+        .badge--rejete { background: #fee2e2; color: #991b1b; }
+        .badge--devis { background: #dbeafe; color: #1e40af; }
+        .badge--contact { background: #f3e8ff; color: #6b21a8; }
+
+        /* Actions */
+        .actions { display: flex; gap: 6px; }
+        .btn-action { padding: 6px 14px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+        .btn-approve { background: #059669; color: #fff; }
+        .btn-approve:hover { background: #047857; }
+        .btn-reject { background: #fff; color: #dc2626; border: 1px solid #fecaca; }
+        .btn-reject:hover { background: #fef2f2; }
+        .btn-detail { background: #f1f5f9; color: #475569; }
+        .btn-detail:hover { background: #e2e8f0; }
+
+        /* Config */
+        .config-card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 24px; max-width: 600px; }
+        .config-card h2 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .config-card p { font-size: 14px; color: #64748b; margin-bottom: 16px; }
+        .config-card textarea { width: 100%; min-height: 120px; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; }
+        .config-card textarea:focus { outline: none; border-color: #059669; }
+        .btn-save { margin-top: 12px; background: #059669; color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+        .btn-save:hover { background: #047857; }
+
+        /* Loading & empty */
+        .loading { text-align: center; padding: 48px; color: #94a3b8; }
+        .loading::after { content: ''; display: block; width: 32px; height: 32px; margin: 16px auto; border: 3px solid #e2e8f0; border-top-color: #059669; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .empty { text-align: center; padding: 48px; color: #94a3b8; font-size: 15px; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal { background: #fff; border-radius: 16px; max-width: 560px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 24px; }
+        .modal h3 { font-size: 18px; margin-bottom: 16px; }
+        .modal-row { display: flex; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+        .modal-row:last-child { border-bottom: none; }
+        .modal-label { width: 120px; font-weight: 600; color: #64748b; font-size: 14px; flex-shrink: 0; }
+        .modal-value { font-size: 14px; color: #1e293b; }
+        .modal-close { margin-top: 16px; width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; font-size: 14px; cursor: pointer; }
+
+        /* Toast */
+        .toast { position: fixed; bottom: 24px; right: 24px; background: #1a365d; color: #fff; padding: 14px 20px; border-radius: 10px; font-size: 14px; z-index: 200; opacity: 0; transform: translateY(10px); transition: all 0.3s; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast--success { background: #059669; }
+        .toast--error { background: #dc2626; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .table-wrap { overflow-x: auto; }
+            table { min-width: 700px; }
+            .filter-group { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Allo<span>Propreté</span> Admin</h1>
+        <button class="header__logout" onclick="location.reload()">Déconnexion</button>
+    </div>
+
+    <div class="tabs">
+        <div class="tab tab--active" data-tab="leads" onclick="switchTab('leads')">Leads</div>
+        <div class="tab" data-tab="config" onclick="switchTab('config')">Paramètres</div>
+    </div>
+
+    <div class="content">
+        <!-- LEADS TAB -->
+        <div id="tab-leads">
+            <div class="stats" id="stats"></div>
+            <div class="table-wrap">
+                <div class="table-header">
+                    <h2>Tous les leads</h2>
+                    <div class="filter-group">
+                        <button class="filter-btn filter-btn--active" onclick="filterLeads('all', this)">Tous</button>
+                        <button class="filter-btn" onclick="filterLeads('nouveau', this)">Nouveaux</button>
+                        <button class="filter-btn" onclick="filterLeads('approuvé', this)">Approuvés</button>
+                        <button class="filter-btn" onclick="filterLeads('rejeté', this)">Rejetés</button>
+                    </div>
+                </div>
+                <div id="leads-body">
+                    <div class="loading">Chargement des leads...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONFIG TAB -->
+        <div id="tab-config" style="display: none;">
+            <div class="config-card">
+                <h2>Emails clients destinataires</h2>
+                <p>Entrez les adresses email qui recevront les leads approuvés, une par ligne.</p>
+                <textarea id="client-emails" placeholder="client1@example.com&#10;client2@example.com"></textarea>
+                <button class="btn-save" onclick="saveConfig()">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal" id="modal-content"></div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+    const API = '/.netlify/functions/leads';
+    let password = '';
+    let allLeads = [];
+    let currentFilter = 'all';
+
+    const prestationLabels = {
+        'fin-chantier': 'Fin de chantier',
+        'etat-lieux': 'État des lieux',
+        'bureaux': 'Bureaux',
+        'copropriete': 'Copropriété',
+        'locaux-commerciaux': 'Locaux commerciaux',
+        'industriel': 'Industriel',
+        'vitres': 'Vitres',
+        'remise-etat': 'Remise en état',
+        'autre': 'Autre'
+    };
+
+    // ── Auth ──
+    function init() {
+        password = prompt('Mot de passe admin :');
+        if (!password) {
+            document.querySelector('.content').innerHTML = '<div class="empty">Accès refusé.</div>';
+            return;
+        }
+        loadLeads();
+    }
+
+    async function apiCall(action, method, body) {
+        const opts = {
+            method: method || 'GET',
+            headers: { 'Authorization': 'Bearer ' + password }
+        };
+        if (body) {
+            opts.headers['Content-Type'] = 'application/json';
+            opts.body = JSON.stringify(body);
+        }
+        const res = await fetch(API + '?action=' + action, opts);
+        if (res.status === 401) {
+            toast('Mot de passe incorrect', 'error');
+            throw new Error('401');
+        }
+        return res.json();
+    }
+
+    // ── Tabs ──
+    function switchTab(tab) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('tab--active'));
+        document.querySelector(`[data-tab="${tab}"]`).classList.add('tab--active');
+        document.getElementById('tab-leads').style.display = tab === 'leads' ? 'block' : 'none';
+        document.getElementById('tab-config').style.display = tab === 'config' ? 'block' : 'none';
+        if (tab === 'config') loadConfig();
+    }
+
+    // ── Leads ──
+    async function loadLeads() {
+        document.getElementById('leads-body').innerHTML = '<div class="loading">Chargement des leads...</div>';
+        try {
+            const data = await apiCall('list');
+            allLeads = data.leads || [];
+            renderStats();
+            renderLeads();
+        } catch (e) {
+            document.getElementById('leads-body').innerHTML = '<div class="empty">Erreur de chargement.</div>';
+        }
+    }
+
+    function renderStats() {
+        const total = allLeads.length;
+        const nouveau = allLeads.filter(l => l.status === 'nouveau').length;
+        const approuve = allLeads.filter(l => l.status === 'approuvé').length;
+        const rejete = allLeads.filter(l => l.status === 'rejeté').length;
+
+        document.getElementById('stats').innerHTML = `
+            <div class="stat"><div class="stat__number">${total}</div><div class="stat__label">Total</div></div>
+            <div class="stat stat--nouveau"><div class="stat__number">${nouveau}</div><div class="stat__label">Nouveaux</div></div>
+            <div class="stat stat--approuve"><div class="stat__number">${approuve}</div><div class="stat__label">Approuvés</div></div>
+            <div class="stat stat--rejete"><div class="stat__number">${rejete}</div><div class="stat__label">Rejetés</div></div>
+        `;
+    }
+
+    function renderLeads() {
+        const filtered = currentFilter === 'all' ? allLeads : allLeads.filter(l => l.status === currentFilter);
+
+        if (filtered.length === 0) {
+            document.getElementById('leads-body').innerHTML = '<div class="empty">Aucun lead trouvé.</div>';
+            return;
+        }
+
+        let html = `<table>
+            <thead><tr>
+                <th>Date</th><th>Type</th><th>Nom</th><th>Contact</th><th>Ville</th><th>Prestation</th><th>Statut</th><th>Actions</th>
+            </tr></thead><tbody>`;
+
+        filtered.forEach(lead => {
+            const date = lead.timestamp ? new Date(lead.timestamp).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' }) : '—';
+            const formBadge = `<span class="badge badge--${lead.form_name || 'devis'}">${lead.form_name || 'devis'}</span>`;
+            const statusBadge = `<span class="badge badge--${lead.status || 'nouveau'}">${lead.status || 'nouveau'}</span>`;
+            const presta = prestationLabels[lead.prestation] || lead.prestation || '—';
+
+            let actions = `<button class="btn-action btn-detail" onclick='showDetail(${JSON.stringify(lead).replace(/'/g, "&#39;")})'>Détail</button>`;
+            if (lead.status === 'nouveau') {
+                actions += `<button class="btn-action btn-approve" onclick="approveLead(${lead._row})">Valider</button>`;
+                actions += `<button class="btn-action btn-reject" onclick="rejectLead(${lead._row})">Rejeter</button>`;
+            }
+
+            html += `<tr>
+                <td>${date}</td>
+                <td>${formBadge}</td>
+                <td><strong>${lead.prenom || ''} ${lead.nom || ''}</strong></td>
+                <td>${lead.email || '—'}<br><small style="color:#64748b">${lead.telephone || ''}</small></td>
+                <td>${lead.ville || '—'}</td>
+                <td>${presta}</td>
+                <td>${statusBadge}</td>
+                <td><div class="actions">${actions}</div></td>
+            </tr>`;
+        });
+
+        html += '</tbody></table>';
+        document.getElementById('leads-body').innerHTML = html;
+    }
+
+    function filterLeads(filter, btn) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-btn--active'));
+        if (btn) btn.classList.add('filter-btn--active');
+        renderLeads();
+    }
+
+    // ── Approve / Reject ──
+    async function approveLead(row) {
+        if (!confirm('Valider ce lead et envoyer par email au client ?')) return;
+        try {
+            const data = await apiCall('approve&row=' + row, 'POST');
+            toast('Lead approuvé et envoyé à : ' + (data.sent_to || []).join(', '), 'success');
+            loadLeads();
+        } catch (e) {
+            toast('Erreur : ' + e.message, 'error');
+        }
+    }
+
+    async function rejectLead(row) {
+        if (!confirm('Rejeter ce lead ?')) return;
+        try {
+            await apiCall('reject&row=' + row, 'POST');
+            toast('Lead rejeté', 'success');
+            loadLeads();
+        } catch (e) {
+            toast('Erreur : ' + e.message, 'error');
+        }
+    }
+
+    // ── Detail Modal ──
+    function showDetail(lead) {
+        const date = lead.timestamp ? new Date(lead.timestamp).toLocaleString('fr-FR') : 'N/A';
+        const presta = prestationLabels[lead.prestation] || lead.prestation || 'N/A';
+        const details = (lead.details || 'Aucun détail').replace(/\n/g, '<br>');
+
+        document.getElementById('modal-content').innerHTML = `
+            <h3>Détail du lead</h3>
+            <div class="modal-row"><span class="modal-label">Date</span><span class="modal-value">${date}</span></div>
+            <div class="modal-row"><span class="modal-label">Formulaire</span><span class="modal-value"><span class="badge badge--${lead.form_name}">${lead.form_name}</span></span></div>
+            <div class="modal-row"><span class="modal-label">Nom</span><span class="modal-value">${lead.prenom || ''} ${lead.nom || ''}</span></div>
+            <div class="modal-row"><span class="modal-label">Email</span><span class="modal-value"><a href="mailto:${lead.email}">${lead.email || 'N/A'}</a></span></div>
+            <div class="modal-row"><span class="modal-label">Téléphone</span><span class="modal-value"><a href="tel:${lead.telephone}">${lead.telephone || 'N/A'}</a></span></div>
+            <div class="modal-row"><span class="modal-label">Ville</span><span class="modal-value">${lead.ville || 'N/A'}</span></div>
+            <div class="modal-row"><span class="modal-label">Prestation</span><span class="modal-value">${presta}</span></div>
+            <div class="modal-row"><span class="modal-label">Détails</span><span class="modal-value">${details}</span></div>
+            <div class="modal-row"><span class="modal-label">Statut</span><span class="modal-value"><span class="badge badge--${lead.status}">${lead.status}</span></span></div>
+            ${lead.sent_to ? `<div class="modal-row"><span class="modal-label">Envoyé à</span><span class="modal-value">${lead.sent_to}</span></div>` : ''}
+            <button class="modal-close" onclick="closeModal()">Fermer</button>
+        `;
+        document.getElementById('modal').classList.add('open');
+    }
+
+    function closeModal() {
+        document.getElementById('modal').classList.remove('open');
+    }
+
+    document.getElementById('modal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // ── Config ──
+    async function loadConfig() {
+        try {
+            const data = await apiCall('getConfig');
+            document.getElementById('client-emails').value = (data.client_emails || []).join('\n');
+        } catch (e) {
+            toast('Erreur chargement config', 'error');
+        }
+    }
+
+    async function saveConfig() {
+        const raw = document.getElementById('client-emails').value;
+        const emails = raw.split('\n').map(e => e.trim()).filter(e => e && e.includes('@'));
+        try {
+            await apiCall('saveConfig', 'POST', { client_emails: emails });
+            toast(emails.length + ' email(s) enregistré(s)', 'success');
+        } catch (e) {
+            toast('Erreur sauvegarde', 'error');
+        }
+    }
+
+    // ── Toast ──
+    function toast(msg, type) {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.className = 'toast show' + (type ? ' toast--' + type : '');
+        clearTimeout(el._timeout);
+        el._timeout = setTimeout(() => { el.className = 'toast'; }, 4000);
+    }
+
+    // ── Init ──
+    init();
+    </script>
+</body>
+</html>

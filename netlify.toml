@@ -3,7 +3,9 @@
 
 [build]
   publish = "."
-  # command = "" # Pas de build nécessaire pour un site statique
+
+[functions]
+  directory = "netlify/functions"
 
 # Headers de sécurité et performance
 [[headers]]
