@@ -131,7 +131,9 @@
 
 .hero--page {
     background: var(--color-primary);
-    padding: var(--space-16) 0;
+    padding: var(--space-16) 0 8rem;
+    position: relative;
+    overflow: hidden;
 }
 
 .hero--page::before {
