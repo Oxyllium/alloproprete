@@ -74,6 +74,17 @@
         });
     });
 
+    // Close mobile menu when any nav link (except dropdown triggers) is clicked
+    nav?.querySelectorAll('a:not(.header__dropdown-trigger)').forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 1024 && nav?.classList.contains('header__nav--open')) {
+                nav.classList.remove('header__nav--open');
+                navToggle?.classList.remove('header__toggle--active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+
     // Close menu on resize
     window.addEventListener('resize', function() {
         if (window.innerWidth > 1024) {

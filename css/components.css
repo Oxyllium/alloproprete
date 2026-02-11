@@ -347,11 +347,12 @@
 
     .header__dropdown-menu {
         position: static;
-        transform: none;
+        transform: none !important;
         opacity: 1;
         visibility: visible;
         box-shadow: none;
         background: transparent;
+        min-width: 0;
         padding: 0 0 0 var(--space-4);
         display: none;
     }
@@ -371,7 +372,7 @@
         box-shadow: none;
         opacity: 1;
         visibility: visible;
-        transform: none;
+        transform: none !important;
         border-top: none;
         display: none;
     }
@@ -1037,7 +1038,7 @@
         padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
-    body {
+    body:has(.mobile-sticky-bar) {
         padding-bottom: 80px;
     }
 }

@@ -11,12 +11,14 @@
 /qui-sommes-nous            /pages/qui-sommes-nous.html     200
 /a-propos                   /pages/qui-sommes-nous.html     301
 /mentions-legales           /pages/mentions-legales.html    200
+/politique-de-confidentialite  /pages/politique-de-confidentialite.html  200
 /confidentialite            /pages/politique-de-confidentialite.html  200
 
-# Services - URLs courtes
+# Services - URLs courtes (index pages)
 /nettoyage-fin-de-chantier          /pages/nettoyage-fin-de-chantier/     200
 /fin-de-chantier                    /pages/nettoyage-fin-de-chantier/     301
-/nettoyage-etat-des-lieux           /pages/nettoyage-avant-etat-des-lieux/  200
+/nettoyage-avant-etat-des-lieux     /pages/nettoyage-avant-etat-des-lieux/  200
+/nettoyage-etat-des-lieux           /pages/nettoyage-avant-etat-des-lieux/  301
 /etat-des-lieux                     /pages/nettoyage-avant-etat-des-lieux/  301
 /entretien-bureaux                  /pages/entretien-bureaux/             200
 /bureaux                            /pages/entretien-bureaux/             301
@@ -30,14 +32,27 @@
 /vitres                             /pages/nettoyage-vitres/              301
 /remise-en-etat                     /pages/remise-en-etat/                200
 
-# Zones géographiques - URLs courtes
-/paris                      /pages/nettoyage-paris.html                 200
+# Services - sous-pages localités (splat)
+/nettoyage-fin-de-chantier/*        /pages/nettoyage-fin-de-chantier/:splat  200
+/nettoyage-avant-etat-des-lieux/*   /pages/nettoyage-avant-etat-des-lieux/:splat  200
+/entretien-bureaux/*                /pages/entretien-bureaux/:splat       200
+/nettoyage-copropriete/*            /pages/nettoyage-copropriete/:splat   200
+/nettoyage-locaux-commerciaux/*     /pages/nettoyage-locaux-commerciaux/:splat  200
+/nettoyage-industriel/*             /pages/nettoyage-industriel/:splat    200
+/nettoyage-vitres/*                 /pages/nettoyage-vitres/:splat       200
+/remise-en-etat/*                   /pages/remise-en-etat/:splat         200
+
+# Zones géographiques - URLs canoniques
 /nettoyage-paris            /pages/nettoyage-paris.html                 200
-/val-doise                  /pages/nettoyage-val-doise-95.html          200
+/paris                      /pages/nettoyage-paris.html                 301
+/nettoyage-val-doise-95     /pages/nettoyage-val-doise-95.html          200
+/val-doise                  /pages/nettoyage-val-doise-95.html          301
 /95                         /pages/nettoyage-val-doise-95.html          301
-/essonne                    /pages/nettoyage-essonne-91.html            200
+/nettoyage-essonne-91       /pages/nettoyage-essonne-91.html            200
+/essonne                    /pages/nettoyage-essonne-91.html            301
 /91                         /pages/nettoyage-essonne-91.html            301
-/seine-et-marne             /pages/nettoyage-seine-et-marne-77.html     200
+/nettoyage-seine-et-marne-77  /pages/nettoyage-seine-et-marne-77.html  200
+/seine-et-marne             /pages/nettoyage-seine-et-marne-77.html     301
 /77                         /pages/nettoyage-seine-et-marne-77.html     301
 
 # Page merci - URL propre
@@ -47,6 +62,3 @@
 /services                   /                               301
 /accueil                    /                               301
 /home                       /                               301
-
-# SPA fallback - 404 page (optionnel)
-# /*                        /404.html                       404

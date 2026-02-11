@@ -1,312 +1,328 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <!-- Pages principales -->
+    <!-- Page d'accueil -->
     <url>
         <loc>https://alloproprete.fr/</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
+
+    <!-- Pages principales -->
     <url>
         <loc>https://alloproprete.fr/devis-nettoyage</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://alloproprete.fr/qui-sommes-nous</loc>
-        <lastmod>2024-01-15</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
         <loc>https://alloproprete.fr/contact</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://alloproprete.fr/qui-sommes-nous</loc>
+        <lastmod>2026-02-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
     </url>
 
     <!-- Pages services piliers -->
     <url>
         <loc>https://alloproprete.fr/nettoyage-fin-de-chantier</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-avant-etat-des-lieux</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/entretien-bureaux</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-copropriete</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-locaux-commerciaux</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-industriel</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-vitres</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/remise-en-etat</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
 
-    <!-- Pages villes hub -->
+    <!-- Pages zones géographiques -->
     <url>
         <loc>https://alloproprete.fr/nettoyage-paris</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-val-doise-95</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-essonne-91</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-seine-et-marne-77</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
 
-    <!-- Nettoyage fin de chantier - local -->
+    <!-- Nettoyage fin de chantier - localités -->
     <url>
         <loc>https://alloproprete.fr/nettoyage-fin-de-chantier/paris</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-fin-de-chantier/val-doise-95</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-fin-de-chantier/essonne-91</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-fin-de-chantier/seine-et-marne-77</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
 
-    <!-- Nettoyage avant état des lieux - local -->
+    <!-- Nettoyage avant état des lieux - localités -->
     <url>
         <loc>https://alloproprete.fr/nettoyage-avant-etat-des-lieux/paris</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-avant-etat-des-lieux/val-doise-95</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-avant-etat-des-lieux/essonne-91</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-avant-etat-des-lieux/seine-et-marne-77</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
 
-    <!-- Entretien bureaux - local -->
+    <!-- Entretien bureaux - localités -->
     <url>
         <loc>https://alloproprete.fr/entretien-bureaux/paris</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/entretien-bureaux/val-doise-95</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/entretien-bureaux/essonne-91</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/entretien-bureaux/seine-et-marne-77</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
 
-    <!-- Nettoyage copropriété - local -->
+    <!-- Nettoyage copropriété - localités -->
     <url>
         <loc>https://alloproprete.fr/nettoyage-copropriete/paris</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-copropriete/val-doise-95</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-copropriete/essonne-91</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-copropriete/seine-et-marne-77</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
 
-    <!-- Nettoyage locaux commerciaux - local -->
+    <!-- Nettoyage locaux commerciaux - localités -->
     <url>
         <loc>https://alloproprete.fr/nettoyage-locaux-commerciaux/paris</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-locaux-commerciaux/val-doise-95</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-locaux-commerciaux/essonne-91</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-locaux-commerciaux/seine-et-marne-77</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
 
-    <!-- Nettoyage industriel - local -->
+    <!-- Nettoyage industriel - localités -->
     <url>
         <loc>https://alloproprete.fr/nettoyage-industriel/paris</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-industriel/val-doise-95</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-industriel/essonne-91</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-industriel/seine-et-marne-77</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
 
-    <!-- Nettoyage vitres - local -->
+    <!-- Nettoyage vitres - localités -->
     <url>
         <loc>https://alloproprete.fr/nettoyage-vitres/paris</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-vitres/val-doise-95</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-vitres/essonne-91</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/nettoyage-vitres/seine-et-marne-77</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
 
-    <!-- Remise en état - local -->
+    <!-- Remise en état - localités -->
     <url>
         <loc>https://alloproprete.fr/remise-en-etat/paris</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/remise-en-etat/val-doise-95</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/remise-en-etat/essonne-91</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://alloproprete.fr/remise-en-etat/seine-et-marne-77</loc>
-        <lastmod>2024-01-15</lastmod>
+        <lastmod>2026-02-11</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Pages légales -->
+    <url>
+        <loc>https://alloproprete.fr/mentions-legales</loc>
+        <lastmod>2026-02-11</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>https://alloproprete.fr/politique-de-confidentialite</loc>
+        <lastmod>2026-02-11</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
     </url>
 </urlset>
