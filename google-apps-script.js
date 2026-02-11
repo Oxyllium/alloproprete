@@ -1,5 +1,5 @@
 // ============================================================
-// Google Apps Script – AlloPropreté Lead Management
+// Google Apps Script – Oxyllium Leads Lead Management
 // Déployer en tant qu'Application Web (accès : Tous)
 // Emails envoyés via Gmail (MailApp) – gratuit
 // ============================================================
@@ -128,7 +128,7 @@ function approveLead(rowNum) {
   var htmlBody = ""
     + "<div style='font-family: -apple-system, Arial, sans-serif; max-width: 600px; margin: 0 auto;'>"
     + "<div style='background: #1a365d; color: #fff; padding: 24px; text-align: center; border-radius: 12px 12px 0 0;'>"
-    + "<h1 style='margin: 0; font-size: 20px; font-weight: 600;'>Nouveau Lead AlloPropreté</h1>"
+    + "<h1 style='margin: 0; font-size: 20px; font-weight: 600;'>Nouveau Lead Oxyllium Leads</h1>"
     + "<p style='margin: 8px 0 0; opacity: 0.8; font-size: 14px;'>Formulaire : " + (lead.form_name || "devis") + "</p>"
     + "</div>"
     + "<div style='padding: 24px; background: #f8fafc; border: 1px solid #e2e8f0; border-top: none;'>"
@@ -159,7 +159,7 @@ function approveLead(rowNum) {
     + "<p style='margin: 8px 0 0; color: #1e293b; line-height: 1.6;'>" + (lead.details || "Aucun détail").toString().replace(/\n/g, "<br>") + "</p>"
     + "</div>"
     + "<p style='color: #94a3b8; font-size: 12px; margin-top: 16px; text-align: center;'>"
-    + "Envoyé via AlloPropreté Admin</p>"
+    + "Envoyé via Oxyllium Leads Admin</p>"
     + "</div>"
     + "</div>";
 
@@ -168,7 +168,7 @@ function approveLead(rowNum) {
       to: clientEmails[i].trim(),
       subject: subject,
       htmlBody: htmlBody,
-      name: "AlloPropreté"
+      name: "Oxyllium Leads"
     });
   }
 
