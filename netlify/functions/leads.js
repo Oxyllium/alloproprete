@@ -8,7 +8,7 @@
 // POST ?action=saveConfig   → save client emails to Sheet
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "alloproprete2025";
-const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL;
+const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL || "https://script.google.com/macros/s/AKfycbzELKo-z_iv1uOZ11VnORBp0QCzaonYWTbh5l5B3ahtnX_ZvnYXYRvH6OL2f5bymwE4jA/exec";
 
 function json(statusCode, data) {
   return {

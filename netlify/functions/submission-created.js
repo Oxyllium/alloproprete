@@ -1,7 +1,7 @@
 // Auto-triggered by Netlify on every form submission.
 // Sends lead data to Google Apps Script for Google Sheet backup.
 
-const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL;
+const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL || "https://script.google.com/macros/s/AKfycbzELKo-z_iv1uOZ11VnORBp0QCzaonYWTbh5l5B3ahtnX_ZvnYXYRvH6OL2f5bymwE4jA/exec";
 
 exports.handler = async function (event) {
   try {
