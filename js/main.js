@@ -163,14 +163,13 @@
 
         // Form submission
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Validate form
+            // Validate form before allowing native submit
             if (!validateForm(form)) {
+                e.preventDefault();
                 return;
             }
 
-            // Collect form data
+            // Collect form data for tracking
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
 
@@ -182,14 +181,7 @@
                 page: window.location.pathname
             });
 
-            // Show success message
-            showFormSuccess(form);
-
-            // Here you would typically send the data to your backend
-            console.log('Form data:', data);
-
-            // For demo purposes, we'll just show the success message
-            // In production, you'd make an API call here
+            // Let the form submit natively to Netlify Forms
         });
     });
 
