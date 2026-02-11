@@ -51,9 +51,11 @@ exports.handler = async function (event) {
     // ── APPROVE LEAD ──
     if (action === "approve") {
       const row = params.row;
+      const leadType = params.leadType || "";
+      const priceTTC = params.priceTTC || "";
       if (!row) return json(400, { error: "row parameter required" });
 
-      const data = await gasGet("approveLead", { row });
+      const data = await gasGet("approveLead", { row, leadType, priceTTC });
 
       if (data.error) {
         return json(400, data);

@@ -19,7 +19,7 @@ function doGet(e) {
   if (action === "addLead") return jsonResponse(addLead(JSON.parse(e.parameter.data)));
   if (action === "updateStatus") return jsonResponse(updateStatus(JSON.parse(e.parameter.data)));
   if (action === "saveConfig") return jsonResponse(saveConfig(JSON.parse(e.parameter.data)));
-  if (action === "approveLead") return jsonResponse(approveLead(e.parameter.row));
+  if (action === "approveLead") return jsonResponse(approveLead(e.parameter.row, e.parameter.leadType || "", e.parameter.priceTTC || ""));
 
   return jsonResponse({ error: "Unknown action: " + action });
 }
@@ -101,7 +101,7 @@ function getLead(rowNum) {
 }
 
 // ── Approve lead: send email + update status ──
-function approveLead(rowNum) {
+function approveLead(rowNum, leadType, priceTTC) {
   var lead = getLead(rowNum);
   var config = getConfig();
   var clientEmails = config.client_emails || [];
@@ -158,6 +158,11 @@ function approveLead(rowNum) {
     + "<strong style='color: #475569; font-size: 14px;'>Détails :</strong>"
     + "<p style='margin: 8px 0 0; color: #1e293b; line-height: 1.6;'>" + (lead.details || "Aucun détail").toString().replace(/\n/g, "<br>") + "</p>"
     + "</div>"
+    + (leadType ? "<div style='margin-top: 12px; padding: 14px 16px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px;'>"
+    + "<table style='width: 100%; border-collapse: collapse;'>"
+    + "<tr><td style='font-weight: 600; color: #1e40af; font-size: 14px;'>Type de lead</td><td style='text-align: right; color: #1e40af; font-size: 14px;'>" + leadType + "</td></tr>"
+    + "<tr><td style='font-weight: 700; color: #1e40af; font-size: 16px; padding-top: 6px;'>Prix TTC</td><td style='text-align: right; font-weight: 700; color: #1e40af; font-size: 16px; padding-top: 6px;'>" + priceTTC + " €</td></tr>"
+    + "</table></div>" : "")
     + "<p style='color: #94a3b8; font-size: 12px; margin-top: 16px; text-align: center;'>"
     + "Envoyé via Oxyllium Leads Admin</p>"
     + "</div>"
@@ -176,7 +181,9 @@ function approveLead(rowNum) {
     row: parseInt(rowNum),
     status: "approuvé",
     sent_to: clientEmails.join(", "),
-    sent_at: new Date().toISOString()
+    sent_at: new Date().toISOString(),
+    lead_type: leadType || "",
+    price_ttc: priceTTC || ""
   });
 
   return { success: true, sent_to: clientEmails };
@@ -192,10 +199,14 @@ function updateStatus(body) {
   var statusCol = headers.indexOf("status") + 1;
   var sentToCol = headers.indexOf("sent_to") + 1;
   var sentAtCol = headers.indexOf("sent_at") + 1;
+  var leadTypeCol = headers.indexOf("lead_type") + 1;
+  var priceTtcCol = headers.indexOf("price_ttc") + 1;
 
   if (statusCol > 0) sheet.getRange(row, statusCol).setValue(body.status);
   if (body.sent_to && sentToCol > 0) sheet.getRange(row, sentToCol).setValue(body.sent_to);
   if (body.sent_at && sentAtCol > 0) sheet.getRange(row, sentAtCol).setValue(body.sent_at);
+  if (body.lead_type && leadTypeCol > 0) sheet.getRange(row, leadTypeCol).setValue(body.lead_type);
+  if (body.price_ttc && priceTtcCol > 0) sheet.getRange(row, priceTtcCol).setValue(body.price_ttc);
 
   return { success: true };
 }

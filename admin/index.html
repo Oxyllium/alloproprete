@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Admin | AlloPropreté</title>
+    <title>Admin | Oxyllium Leads</title>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; color: #1e293b; min-height: 100vh; }
@@ -67,6 +67,7 @@
 
         /* Config */
         .config-card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 24px; max-width: 600px; }
+        .config-card + .config-card { margin-top: 16px; }
         .config-card h2 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
         .config-card p { font-size: 14px; color: #64748b; margin-bottom: 16px; }
         .config-card textarea { width: 100%; min-height: 120px; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; }
@@ -91,6 +92,20 @@
         .modal-value { font-size: 14px; color: #1e293b; }
         .modal-close { margin-top: 16px; width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; font-size: 14px; cursor: pointer; }
 
+        /* Approve modal */
+        .approve-form { margin-top: 16px; }
+        .approve-form label { display: block; font-weight: 600; font-size: 14px; color: #475569; margin-bottom: 8px; }
+        .approve-form select { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: inherit; background: #fff; cursor: pointer; }
+        .approve-form select:focus { outline: none; border-color: #059669; }
+        .approve-price { margin-top: 12px; padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; }
+        .approve-price__row { display: flex; justify-content: space-between; font-size: 14px; padding: 4px 0; }
+        .approve-price__row--total { font-weight: 700; font-size: 16px; color: #059669; border-top: 1px solid #bbf7d0; padding-top: 8px; margin-top: 4px; }
+        .approve-actions { display: flex; gap: 10px; margin-top: 16px; }
+        .approve-actions button { flex: 1; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+        .btn-confirm-approve { background: #059669; color: #fff; border: none; }
+        .btn-confirm-approve:hover { background: #047857; }
+        .btn-cancel { background: #fff; color: #64748b; border: 1px solid #e2e8f0; }
+
         /* Toast */
         .toast { position: fixed; bottom: 24px; right: 24px; background: #1a365d; color: #fff; padding: 14px 20px; border-radius: 10px; font-size: 14px; z-index: 200; opacity: 0; transform: translateY(10px); transition: all 0.3s; }
         .toast.show { opacity: 1; transform: translateY(0); }
@@ -108,7 +123,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Allo<span>Propreté</span> Admin</h1>
+        <h1>Oxyllium <span>Leads</span></h1>
         <button class="header__logout" onclick="location.reload()">Déconnexion</button>
     </div>
 
@@ -153,6 +168,11 @@
         <div class="modal" id="modal-content"></div>
     </div>
 
+    <!-- Approve Modal -->
+    <div class="modal-overlay" id="approve-modal">
+        <div class="modal" id="approve-modal-content"></div>
+    </div>
+
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
@@ -173,6 +193,13 @@
         'remise-etat': 'Remise en état',
         'autre': 'Autre'
     };
+
+    const leadTypes = [
+        { id: 'ponctuel', label: 'Nettoyage ponctuel / Demande de devis simple', ht: 30, ttc: 36 },
+        { id: 'general', label: 'Nettoyage général / Entretien régulier', ht: 50, ttc: 60 },
+        { id: 'fin-chantier', label: 'Nettoyage de fin de chantier', ht: 70, ttc: 84 },
+        { id: 'contrat', label: 'Contrat annuel / Marché récurrent', ht: 90, ttc: 108 }
+    ];
 
     // ── Auth ──
     function init() {
@@ -259,7 +286,7 @@
 
             let actions = `<button class="btn-action btn-detail" onclick='showDetail(${JSON.stringify(lead).replace(/'/g, "&#39;")})'>Détail</button>`;
             if (lead.status === 'nouveau') {
-                actions += `<button class="btn-action btn-approve" onclick="approveLead(${lead._row})">Valider</button>`;
+                actions += `<button class="btn-action btn-approve" onclick="showApproveModal(${lead._row})">Valider</button>`;
                 actions += `<button class="btn-action btn-reject" onclick="rejectLead(${lead._row})">Rejeter</button>`;
             }
 
@@ -286,18 +313,67 @@
         renderLeads();
     }
 
-    // ── Approve / Reject ──
-    async function approveLead(row) {
-        if (!confirm('Valider ce lead et envoyer par email au client ?')) return;
+    // ── Approve Modal ──
+    function showApproveModal(row) {
+        const lead = allLeads.find(l => l._row === row);
+        const presta = prestationLabels[lead.prestation] || lead.prestation || '—';
+
+        let optionsHtml = leadTypes.map(t =>
+            `<option value="${t.id}">${t.label} — ${t.ht}€ HT / ${t.ttc}€ TTC</option>`
+        ).join('');
+
+        document.getElementById('approve-modal-content').innerHTML = `
+            <h3>Valider le lead</h3>
+            <div class="modal-row"><span class="modal-label">Nom</span><span class="modal-value"><strong>${lead.prenom || ''} ${lead.nom || ''}</strong></span></div>
+            <div class="modal-row"><span class="modal-label">Prestation</span><span class="modal-value">${presta}</span></div>
+            <div class="modal-row"><span class="modal-label">Ville</span><span class="modal-value">${lead.ville || '—'}</span></div>
+            <div class="approve-form">
+                <label>Type de lead (facturation client)</label>
+                <select id="lead-type-select" onchange="updatePrice()">
+                    ${optionsHtml}
+                </select>
+                <div class="approve-price" id="approve-price">
+                    <div class="approve-price__row"><span>Prix HT</span><span id="price-ht">30,00 €</span></div>
+                    <div class="approve-price__row"><span>TVA (20%)</span><span id="price-tva">6,00 €</span></div>
+                    <div class="approve-price__row approve-price__row--total"><span>Prix TTC</span><span id="price-ttc">36,00 €</span></div>
+                </div>
+                <div class="approve-actions">
+                    <button class="btn-cancel" onclick="closeApproveModal()">Annuler</button>
+                    <button class="btn-confirm-approve" onclick="confirmApprove(${row})">Valider et envoyer</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('approve-modal').classList.add('open');
+    }
+
+    function updatePrice() {
+        const selected = document.getElementById('lead-type-select').value;
+        const type = leadTypes.find(t => t.id === selected);
+        if (type) {
+            document.getElementById('price-ht').textContent = type.ht.toFixed(2).replace('.', ',') + ' €';
+            document.getElementById('price-tva').textContent = (type.ttc - type.ht).toFixed(2).replace('.', ',') + ' €';
+            document.getElementById('price-ttc').textContent = type.ttc.toFixed(2).replace('.', ',') + ' €';
+        }
+    }
+
+    function closeApproveModal() {
+        document.getElementById('approve-modal').classList.remove('open');
+    }
+
+    async function confirmApprove(row) {
+        const selected = document.getElementById('lead-type-select').value;
+        const type = leadTypes.find(t => t.id === selected);
         try {
-            const data = await apiCall('approve&row=' + row, 'POST');
-            toast('Lead approuvé et envoyé à : ' + (data.sent_to || []).join(', '), 'success');
+            const data = await apiCall('approve&row=' + row + '&leadType=' + encodeURIComponent(type.label) + '&priceTTC=' + type.ttc, 'POST');
+            toast('Lead approuvé — ' + type.label + ' (' + type.ttc + '€ TTC)', 'success');
+            closeApproveModal();
             loadLeads();
         } catch (e) {
             toast('Erreur : ' + e.message, 'error');
         }
     }
 
+    // ── Reject ──
     async function rejectLead(row) {
         if (!confirm('Rejeter ce lead ?')) return;
         try {
@@ -326,6 +402,8 @@
             <div class="modal-row"><span class="modal-label">Prestation</span><span class="modal-value">${presta}</span></div>
             <div class="modal-row"><span class="modal-label">Détails</span><span class="modal-value">${details}</span></div>
             <div class="modal-row"><span class="modal-label">Statut</span><span class="modal-value"><span class="badge badge--${lead.status}">${lead.status}</span></span></div>
+            ${lead.lead_type ? `<div class="modal-row"><span class="modal-label">Type lead</span><span class="modal-value">${lead.lead_type}</span></div>` : ''}
+            ${lead.price_ttc ? `<div class="modal-row"><span class="modal-label">Prix TTC</span><span class="modal-value">${lead.price_ttc} €</span></div>` : ''}
             ${lead.sent_to ? `<div class="modal-row"><span class="modal-label">Envoyé à</span><span class="modal-value">${lead.sent_to}</span></div>` : ''}
             <button class="modal-close" onclick="closeModal()">Fermer</button>
         `;
@@ -338,6 +416,9 @@
 
     document.getElementById('modal').addEventListener('click', function(e) {
         if (e.target === this) closeModal();
+    });
+    document.getElementById('approve-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeApproveModal();
     });
 
     // ── Config ──
