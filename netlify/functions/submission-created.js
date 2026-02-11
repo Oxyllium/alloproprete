@@ -1,5 +1,6 @@
 // Auto-triggered by Netlify on every form submission.
 // Sends lead data to Google Apps Script for Google Sheet backup.
+// Uses GET to avoid Google Apps Script POST redirect issues.
 
 const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL || "https://script.google.com/macros/s/AKfycbzELKo-z_iv1uOZ11VnORBp0QCzaonYWTbh5l5B3ahtnX_ZvnYXYRvH6OL2f5bymwE4jA/exec";
 
@@ -20,11 +21,8 @@ exports.handler = async function (event) {
       source_url: payload.data.referrer || "",
     };
 
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "addLead", data: leadData }),
-    });
+    const url = `${GOOGLE_SCRIPT_URL}?action=addLead&data=${encodeURIComponent(JSON.stringify(leadData))}`;
+    const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error(`Apps Script responded with ${response.status}`);

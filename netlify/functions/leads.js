@@ -1,11 +1,6 @@
 // Admin API for lead management.
 // All requests require Authorization: Bearer <ADMIN_PASSWORD>
-//
-// GET  ?action=list         → all leads from Sheet
-// POST ?action=approve&row=N → approve lead, send email via Gmail (Apps Script)
-// POST ?action=reject&row=N  → reject lead, update Sheet
-// GET  ?action=getConfig    → client emails from Sheet
-// POST ?action=saveConfig   → save client emails to Sheet
+// All calls to Google Apps Script use GET to avoid POST redirect issues.
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "alloproprete2025";
 const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL || "https://script.google.com/macros/s/AKfycbzELKo-z_iv1uOZ11VnORBp0QCzaonYWTbh5l5B3ahtnX_ZvnYXYRvH6OL2f5bymwE4jA/exec";
@@ -23,6 +18,17 @@ function json(statusCode, data) {
   };
 }
 
+async function gasGet(action, extraParams) {
+  let url = `${GOOGLE_SCRIPT_URL}?action=${action}`;
+  if (extraParams) {
+    for (const [key, value] of Object.entries(extraParams)) {
+      url += `&${key}=${encodeURIComponent(typeof value === "string" ? value : JSON.stringify(value))}`;
+    }
+  }
+  const res = await fetch(url);
+  return res.json();
+}
+
 exports.handler = async function (event) {
   if (event.httpMethod === "OPTIONS") return json(200, {});
 
@@ -38,8 +44,7 @@ exports.handler = async function (event) {
   try {
     // ── LIST LEADS ──
     if (action === "list") {
-      const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=getLeads`);
-      const data = await res.json();
+      const data = await gasGet("getLeads");
       return json(200, data);
     }
 
@@ -48,16 +53,7 @@ exports.handler = async function (event) {
       const row = params.row;
       if (!row) return json(400, { error: "row parameter required" });
 
-      // Send approve request to Apps Script (handles email + status update)
-      const res = await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "approveLead",
-          row: parseInt(row),
-        }),
-      });
-      const data = await res.json();
+      const data = await gasGet("approveLead", { row });
 
       if (data.error) {
         return json(400, data);
@@ -71,14 +67,8 @@ exports.handler = async function (event) {
       const row = params.row;
       if (!row) return json(400, { error: "row parameter required" });
 
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "updateStatus",
-          row: parseInt(row),
-          status: "rejeté",
-        }),
+      await gasGet("updateStatus", {
+        data: { row: parseInt(row), status: "rejeté" },
       });
 
       return json(200, { success: true });
@@ -86,21 +76,15 @@ exports.handler = async function (event) {
 
     // ── GET CONFIG ──
     if (action === "getConfig") {
-      const res = await fetch(`${GOOGLE_SCRIPT_URL}?action=getConfig`);
-      const data = await res.json();
+      const data = await gasGet("getConfig");
       return json(200, data);
     }
 
     // ── SAVE CONFIG ──
     if (action === "saveConfig") {
       const body = JSON.parse(event.body);
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "saveConfig",
-          client_emails: body.client_emails,
-        }),
+      await gasGet("saveConfig", {
+        data: { client_emails: body.client_emails },
       });
       return json(200, { success: true });
     }
