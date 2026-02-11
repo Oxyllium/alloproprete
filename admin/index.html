@@ -202,14 +202,14 @@
     ];
 
     // ── Auth ──
-    function init() {
+    async function init() {
         password = prompt('Mot de passe admin :');
         if (!password) {
             document.querySelector('.content').innerHTML = '<div class="empty">Accès refusé.</div>';
             return;
         }
-        loadLeads();
-        loadConfig();
+        await loadLeads();
+        await loadConfig();
     }
 
     async function apiCall(action, method, body) {
