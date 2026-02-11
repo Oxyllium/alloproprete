@@ -19,6 +19,7 @@ exports.handler = async function (event) {
       details: payload.data.details || "",
       created_at: payload.created_at,
       source_url: payload.data.referrer || "",
+      msclkid: payload.data.msclkid || "",
     };
 
     const url = `${GOOGLE_SCRIPT_URL}?action=addLead&data=${encodeURIComponent(JSON.stringify(leadData))}`;

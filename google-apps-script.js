@@ -55,7 +55,10 @@ function addLead(data) {
     "nouveau",
     "",
     "",
-    data.source_url || ""
+    data.source_url || "",
+    "",
+    "",
+    data.msclkid || ""
   ]);
 
   return { success: true };

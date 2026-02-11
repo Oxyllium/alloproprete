@@ -5,6 +5,21 @@
 (function() {
     'use strict';
 
+    /* ===== MSCLKID CAPTURE (Microsoft Ads) ===== */
+    (function captureMsclkid() {
+        var params = new URLSearchParams(window.location.search);
+        var msclkid = params.get('msclkid');
+        if (msclkid) {
+            var expires = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toUTCString();
+            document.cookie = 'msclkid=' + encodeURIComponent(msclkid) + ';expires=' + expires + ';path=/;SameSite=Lax';
+        }
+    })();
+
+    function getMsclkid() {
+        var match = document.cookie.match('(^|;)\\s*msclkid=([^;]+)');
+        return match ? decodeURIComponent(match[2]) : '';
+    }
+
     /* ===== DATA LAYER INITIALIZATION (GTM Ready) ===== */
     window.dataLayer = window.dataLayer || [];
 
@@ -161,6 +176,13 @@
             }, { once: true });
         });
 
+        // Inject msclkid hidden field
+        var msclkidField = document.createElement('input');
+        msclkidField.type = 'hidden';
+        msclkidField.name = 'msclkid';
+        msclkidField.value = getMsclkid();
+        form.appendChild(msclkidField);
+
         // Form submission
         form.addEventListener('submit', function(e) {
             // Validate form before allowing native submit
@@ -168,6 +190,9 @@
                 e.preventDefault();
                 return;
             }
+
+            // Update msclkid value at submit time (in case cookie was set after page load)
+            msclkidField.value = getMsclkid();
 
             // Collect form data for tracking
             const formData = new FormData(form);
