@@ -144,6 +144,7 @@
                         <button class="filter-btn" onclick="filterLeads('nouveau', this)">Nouveaux</button>
                         <button class="filter-btn" onclick="filterLeads('approuvé', this)">Approuvés</button>
                         <button class="filter-btn" onclick="filterLeads('rejeté', this)">Rejetés</button>
+                        <button class="filter-btn" onclick="exportConversionsCSV()" title="Exporter les conversions pour Microsoft Ads" style="background:#1a365d;color:#fff;border-color:#1a365d;">Exporter CSV</button>
                     </div>
                 </div>
                 <div id="leads-body">
@@ -440,6 +441,35 @@
         } catch (e) {
             toast('Erreur sauvegarde', 'error');
         }
+    }
+
+    // ── Export CSV Microsoft Ads ──
+    function exportConversionsCSV() {
+        const approved = allLeads.filter(l => l.status === 'approuvé' && l.msclkid);
+        if (approved.length === 0) {
+            toast('Aucun lead approuvé avec msclkid à exporter', 'error');
+            return;
+        }
+
+        let csv = 'Type,Status,Id,Parent Id,Client Id,Name,Conversion Currency Code,Conversion Name,Conversion Time,Conversion Value,Microsoft Click Id\n';
+        csv += 'Format Version,,,,,6.0,,,,,\n';
+
+        approved.forEach(lead => {
+            const convTime = lead.sent_at ? new Date(lead.sent_at).toLocaleDateString('en-US') + ' ' + new Date(lead.sent_at).toLocaleTimeString('en-US') : new Date().toLocaleDateString('en-US') + ' ' + new Date().toLocaleTimeString('en-US');
+            const value = lead.price_ttc || '0';
+            const msclkid = (lead.msclkid || '').toString().trim();
+            csv += `Offline Conversion,,,,,,EUR,Lead Validé,${convTime},${value},${msclkid}\n`;
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'microsoft-ads-conversions-' + new Date().toISOString().slice(0, 10) + '.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+
+        toast(approved.length + ' conversion(s) exportée(s)', 'success');
     }
 
     // ── Toast ──
