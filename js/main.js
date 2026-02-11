@@ -97,6 +97,21 @@
         }
     });
 
+    /* ===== ANCHOR SCROLL HANDLER ===== */
+    // Fix iOS Safari scroll trapping on #formulaire anchor
+    if (window.location.hash === '#formulaire') {
+        document.body.style.overflow = '';
+        const formEl = document.getElementById('formulaire');
+        if (formEl) {
+            // Override native anchor scroll with JS-controlled scroll
+            requestAnimationFrame(function() {
+                const headerH = header?.offsetHeight || 80;
+                const top = formEl.getBoundingClientRect().top + window.pageYOffset - headerH - 16;
+                window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+            });
+        }
+    }
+
     /* ===== SCROLL DEPTH TRACKING ===== */
     const scrollDepths = [25, 50, 75, 100];
     const trackedDepths = new Set();

@@ -16,6 +16,7 @@ html {
     tab-size: 4;
     scroll-behavior: smooth;
     overflow-x: hidden;
+    scroll-padding-top: 90px;
 }
 
 body {

@@ -194,7 +194,6 @@
 @media (max-width: 768px) {
     .site-main {
         padding-top: 70px;
-        padding-bottom: 88px; /* Space for mobile sticky bar (padding + button height) */
     }
 }
 

@@ -825,7 +825,7 @@
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
     padding: var(--space-16) 0 var(--space-20);
     position: relative;
-    overflow: hidden;
+    overflow: clip;
 }
 
 .hero-devis::before {
