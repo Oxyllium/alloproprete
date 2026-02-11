@@ -7,7 +7,7 @@
 // GET  ?action=getConfig    → client emails from Sheet
 // POST ?action=saveConfig   → save client emails to Sheet
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "alloproprete2025";
 const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SCRIPT_URL;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const RESEND_FROM =
