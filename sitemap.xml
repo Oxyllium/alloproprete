@@ -312,6 +312,14 @@
         <priority>0.7</priority>
     </url>
 
+    <!-- Plan du site -->
+    <url>
+        <loc>https://alloproprete.fr/plan-du-site</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.4</priority>
+    </url>
+
     <!-- Pages légales -->
     <url>
         <loc>https://alloproprete.fr/mentions-legales</loc>
