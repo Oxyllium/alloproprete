@@ -97,6 +97,34 @@
         }
     });
 
+    /* ===== COOKIE CONSENT BANNER ===== */
+    (function initConsentBanner() {
+        var banner = document.getElementById('cookie-banner');
+        if (!banner) return;
+
+        var stored = localStorage.getItem('alloproprete_consent');
+
+        // If already answered, don't show banner
+        if (stored) return;
+
+        // Show banner after short delay
+        setTimeout(function() {
+            banner.classList.add('cookie-banner--visible');
+        }, 800);
+
+        banner.querySelector('#cookie-accept')?.addEventListener('click', function() {
+            localStorage.setItem('alloproprete_consent', 'granted');
+            window.uetq = window.uetq || [];
+            window.uetq.push('consent', 'update', {'ad_storage': 'granted'});
+            banner.classList.remove('cookie-banner--visible');
+        });
+
+        banner.querySelector('#cookie-refuse')?.addEventListener('click', function() {
+            localStorage.setItem('alloproprete_consent', 'denied');
+            banner.classList.remove('cookie-banner--visible');
+        });
+    })();
+
     /* ===== ANCHOR SCROLL HANDLER ===== */
     // Fix iOS Safari scroll trapping on #formulaire anchor
     if (window.location.hash === '#formulaire') {
