@@ -210,7 +210,8 @@
     });
 
     /* ===== FORM HANDLING (Netlify Forms via fetch + redirect) ===== */
-    document.querySelectorAll('form[data-netlify]').forEach(function(form) {
+    // Netlify strips data-netlify at build time, so target forms by action URL
+    document.querySelectorAll('form[action="/merci"]').forEach(function(form) {
         var formName = form.getAttribute('name');
         var formStarted = false;
 
@@ -245,9 +246,16 @@
             msclkidField.value = getMsclkid();
 
             var formData = new FormData(form);
-            var redirectUrl = form.getAttribute('action') || '/merci';
 
-            // Track conversion
+            // Fire UET conversion event immediately (before fetch, guaranteed to execute)
+            window.uetq = window.uetq || [];
+            window.uetq.push('event', 'submit_lead_form', {
+                'event_category': 'form',
+                'event_label': formName,
+                'event_value': 1
+            });
+
+            // Track internal conversion
             trackEvent('conversion_form_submit', {
                 form_id: formName,
                 prestation_type: formData.get('prestation') || '',
@@ -255,14 +263,14 @@
                 page: window.location.pathname
             });
 
-            // Submit to Netlify Forms via fetch
+            // Submit to Netlify Forms via fetch, then redirect
             fetch('/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams(formData).toString()
             }).then(function(response) {
                 if (response.ok) {
-                    window.location.href = redirectUrl;
+                    window.location.href = '/merci';
                 } else {
                     alert('Une erreur est survenue. Veuillez réessayer.');
                 }
