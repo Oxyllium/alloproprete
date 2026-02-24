@@ -112,12 +112,39 @@
         .toast--success { background: #059669; }
         .toast--error { background: #dc2626; }
 
+        /* ROI Dashboard */
+        .roi-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .roi-stat { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; }
+        .roi-stat__number { font-size: 28px; font-weight: 700; }
+        .roi-stat__label { font-size: 13px; color: #64748b; margin-top: 4px; }
+        .roi-stat--spend .roi-stat__number { color: #dc2626; }
+        .roi-stat--revenue .roi-stat__number { color: #059669; }
+        .roi-stat--roi .roi-stat__number { color: #1a365d; }
+        .roi-stat--cpl .roi-stat__number { color: #7c3aed; }
+
+        .roi-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .roi-toolbar h2 { font-size: 18px; font-weight: 600; }
+        .period-group { display: flex; gap: 6px; }
+        .period-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; font-size: 13px; cursor: pointer; color: #64748b; }
+        .period-btn:hover, .period-btn--active { background: #1a365d; color: #fff; border-color: #1a365d; }
+
+        .roi-table-wrap { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
+        .roi-bar-cell { display: flex; align-items: center; gap: 8px; }
+        .roi-bar { height: 8px; border-radius: 4px; min-width: 2px; }
+        .roi-bar--spend { background: #fca5a5; }
+        .roi-bar--revenue { background: #6ee7b7; }
+        .roi-positive { color: #059669; font-weight: 600; }
+        .roi-negative { color: #dc2626; font-weight: 600; }
+
         /* Responsive */
         @media (max-width: 768px) {
             .stats { grid-template-columns: repeat(2, 1fr); }
+            .roi-stats { grid-template-columns: repeat(2, 1fr); }
             .table-wrap { overflow-x: auto; }
+            .roi-table-wrap { overflow-x: auto; }
             table { min-width: 700px; }
             .filter-group { flex-wrap: wrap; }
+            .period-group { flex-wrap: wrap; }
         }
     </style>
 </head>
@@ -129,6 +156,7 @@
 
     <div class="tabs">
         <div class="tab tab--active" data-tab="leads" onclick="switchTab('leads')">Leads</div>
+        <div class="tab" data-tab="roi" onclick="switchTab('roi')">ROI</div>
         <div class="tab" data-tab="config" onclick="switchTab('config')">Paramètres</div>
     </div>
 
@@ -149,6 +177,29 @@
                 </div>
                 <div id="leads-body">
                     <div class="loading">Chargement des leads...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROI TAB -->
+        <div id="tab-roi" style="display: none;">
+            <div class="roi-stats" id="roi-stats">
+                <div class="roi-stat roi-stat--spend"><div class="roi-stat__number" id="roi-total-spend">—</div><div class="roi-stat__label">Dépenses pub HT</div></div>
+                <div class="roi-stat roi-stat--revenue"><div class="roi-stat__number" id="roi-total-revenue">—</div><div class="roi-stat__label">Revenus leads HT</div></div>
+                <div class="roi-stat roi-stat--roi"><div class="roi-stat__number" id="roi-total-roi">—</div><div class="roi-stat__label">ROI</div></div>
+                <div class="roi-stat roi-stat--cpl"><div class="roi-stat__number" id="roi-total-cpl">—</div><div class="roi-stat__label">Coût par lead HT</div></div>
+            </div>
+            <div class="roi-toolbar">
+                <h2>Détail mensuel</h2>
+                <div class="period-group">
+                    <button class="period-btn" onclick="setROIPeriod(3, this)">3 mois</button>
+                    <button class="period-btn period-btn--active" onclick="setROIPeriod(6, this)">6 mois</button>
+                    <button class="period-btn" onclick="setROIPeriod(12, this)">12 mois</button>
+                </div>
+            </div>
+            <div class="roi-table-wrap">
+                <div id="roi-table-body">
+                    <div class="loading">Chargement des données MS Ads...</div>
                 </div>
             </div>
         </div>
@@ -235,8 +286,10 @@
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('tab--active'));
         document.querySelector(`[data-tab="${tab}"]`).classList.add('tab--active');
         document.getElementById('tab-leads').style.display = tab === 'leads' ? 'block' : 'none';
+        document.getElementById('tab-roi').style.display = tab === 'roi' ? 'block' : 'none';
         document.getElementById('tab-config').style.display = tab === 'config' ? 'block' : 'none';
         if (tab === 'config') loadConfig();
+        if (tab === 'roi') loadROIData();
     }
 
     // ── Leads ──
@@ -470,6 +523,164 @@
         URL.revokeObjectURL(url);
 
         toast(approved.length + ' conversion(s) exportée(s)', 'success');
+    }
+
+    // ── ROI Dashboard ──
+    let spendData = null;
+    let roiPeriod = 6;
+    let roiLoaded = false;
+
+    async function loadROIData() {
+        if (roiLoaded && spendData) {
+            renderROI();
+            return;
+        }
+        document.getElementById('roi-table-body').innerHTML = '<div class="loading">Chargement des données MS Ads...</div>';
+        try {
+            const data = await apiCall('getSpendData');
+            spendData = data.months || [];
+            roiLoaded = true;
+            renderROI();
+        } catch (e) {
+            document.getElementById('roi-table-body').innerHTML = '<div class="empty">Erreur de chargement des données MS Ads.</div>';
+        }
+    }
+
+    function setROIPeriod(months, btn) {
+        roiPeriod = months;
+        document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('period-btn--active'));
+        if (btn) btn.classList.add('period-btn--active');
+        renderROI();
+    }
+
+    function getMonthlyRevenue() {
+        const monthlyRev = {};
+        allLeads.filter(l => l.status === 'approuvé' && l.price_ttc).forEach(lead => {
+            const dateStr = lead.sent_at || lead.timestamp;
+            if (!dateStr) return;
+            const d = new Date(dateStr);
+            const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+            const ht = (parseFloat(lead.price_ttc) || 0) / 1.2;
+            monthlyRev[key] = (monthlyRev[key] || { ht: 0, count: 0 });
+            monthlyRev[key].ht += ht;
+            monthlyRev[key].count += 1;
+        });
+        return monthlyRev;
+    }
+
+    function normalizeSpendMonth(period) {
+        // MS Ads TimePeriod format can vary: "2025-01-01" or "1/1/2025" etc.
+        const d = new Date(period);
+        if (isNaN(d)) return period;
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+    }
+
+    function renderROI() {
+        const monthlyRev = getMonthlyRevenue();
+
+        // Build combined monthly data
+        const allMonths = new Set();
+        (spendData || []).forEach(s => allMonths.add(normalizeSpendMonth(s.period)));
+        Object.keys(monthlyRev).forEach(k => allMonths.add(k));
+
+        let sortedMonths = Array.from(allMonths).sort().reverse();
+
+        // Filter by period
+        const now = new Date();
+        const cutoff = new Date(now.getFullYear(), now.getMonth() - roiPeriod + 1, 1);
+        const cutoffKey = cutoff.getFullYear() + '-' + String(cutoff.getMonth() + 1).padStart(2, '0');
+        sortedMonths = sortedMonths.filter(m => m >= cutoffKey);
+
+        // Build spend lookup
+        const spendByMonth = {};
+        (spendData || []).forEach(s => {
+            const key = normalizeSpendMonth(s.period);
+            spendByMonth[key] = s;
+        });
+
+        // Calculate totals
+        let totalSpend = 0, totalRevenue = 0, totalLeads = 0, totalClicks = 0;
+        const rows = sortedMonths.map(month => {
+            const spend = spendByMonth[month]?.spend || 0;
+            const rev = monthlyRev[month]?.ht || 0;
+            const leads = monthlyRev[month]?.count || 0;
+            const clicks = spendByMonth[month]?.clicks || 0;
+            const impressions = spendByMonth[month]?.impressions || 0;
+            const roi = spend > 0 ? ((rev - spend) / spend * 100) : (rev > 0 ? 100 : 0);
+            const cpc = clicks > 0 ? spend / clicks : 0;
+
+            totalSpend += spend;
+            totalRevenue += rev;
+            totalLeads += leads;
+            totalClicks += clicks;
+
+            return { month, spend, rev, leads, clicks, impressions, roi, cpc };
+        });
+
+        // Find max values for bar widths
+        const maxSpend = Math.max(...rows.map(r => r.spend), 1);
+        const maxRev = Math.max(...rows.map(r => r.rev), 1);
+        const maxVal = Math.max(maxSpend, maxRev);
+
+        // Render summary cards
+        const totalROI = totalSpend > 0 ? ((totalRevenue - totalSpend) / totalSpend * 100) : 0;
+        const totalCPL = totalLeads > 0 ? totalSpend / totalLeads : 0;
+
+        document.getElementById('roi-total-spend').textContent = fmtEur(totalSpend);
+        document.getElementById('roi-total-revenue').textContent = fmtEur(totalRevenue);
+        document.getElementById('roi-total-roi').textContent = (totalROI >= 0 ? '+' : '') + totalROI.toFixed(0) + ' %';
+        document.getElementById('roi-total-roi').className = 'roi-stat__number ' + (totalROI >= 0 ? 'roi-positive' : 'roi-negative');
+        document.getElementById('roi-total-cpl').textContent = fmtEur(totalCPL);
+
+        // Render table
+        if (rows.length === 0) {
+            document.getElementById('roi-table-body').innerHTML = '<div class="empty">Aucune donnée pour cette période.</div>';
+            return;
+        }
+
+        const monthNames = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+
+        let html = `<table>
+            <thead><tr>
+                <th>Mois</th><th>Dépenses HT</th><th>Revenus HT</th><th>ROI</th><th>Leads</th><th>Clics</th><th>CPC</th>
+            </tr></thead><tbody>`;
+
+        rows.forEach(r => {
+            const parts = r.month.split('-');
+            const monthLabel = monthNames[parseInt(parts[1]) - 1] + ' ' + parts[0];
+            const roiClass = r.roi >= 0 ? 'roi-positive' : 'roi-negative';
+            const spendBarW = (r.spend / maxVal * 100).toFixed(0);
+            const revBarW = (r.rev / maxVal * 100).toFixed(0);
+
+            html += `<tr>
+                <td><strong>${monthLabel}</strong></td>
+                <td><div class="roi-bar-cell"><span style="min-width:70px">${fmtEur(r.spend)}</span><div class="roi-bar roi-bar--spend" style="width:${spendBarW}%"></div></div></td>
+                <td><div class="roi-bar-cell"><span style="min-width:70px">${fmtEur(r.rev)}</span><div class="roi-bar roi-bar--revenue" style="width:${revBarW}%"></div></div></td>
+                <td><span class="${roiClass}">${r.roi >= 0 ? '+' : ''}${r.roi.toFixed(0)}%</span></td>
+                <td>${r.leads}</td>
+                <td>${r.clicks}</td>
+                <td>${r.cpc > 0 ? fmtEur(r.cpc) : '—'}</td>
+            </tr>`;
+        });
+
+        // Total row
+        const totalROIClass = totalROI >= 0 ? 'roi-positive' : 'roi-negative';
+        html += `<tr style="background:#f8fafc;font-weight:600;">
+            <td>Total</td>
+            <td>${fmtEur(totalSpend)}</td>
+            <td>${fmtEur(totalRevenue)}</td>
+            <td><span class="${totalROIClass}">${totalROI >= 0 ? '+' : ''}${totalROI.toFixed(0)}%</span></td>
+            <td>${totalLeads}</td>
+            <td>${totalClicks}</td>
+            <td>${totalClicks > 0 ? fmtEur(totalSpend / totalClicks) : '—'}</td>
+        </tr>`;
+
+        html += '</tbody></table>';
+        document.getElementById('roi-table-body').innerHTML = html;
+    }
+
+    function fmtEur(val) {
+        return val.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
     }
 
     // ── Toast ──

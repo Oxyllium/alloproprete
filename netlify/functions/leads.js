@@ -77,6 +77,129 @@ async function uploadOfflineConversion(msclkid, priceTTC) {
   return result;
 }
 
+// ── Microsoft Ads: fetch monthly spend data via Reporting API ──
+async function fetchMsAdsSpendData() {
+  const accessToken = await getMsAdsAccessToken();
+  if (!accessToken) throw new Error("Could not get MS Ads access token");
+
+  const reportingHeaders = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
+    DeveloperToken: MS_ADS_DEVELOPER_TOKEN,
+    CustomerAccountId: MS_ADS_ACCOUNT_ID,
+    CustomerId: MS_ADS_CUSTOMER_ID,
+  };
+
+  // Date range: last 12 months
+  const now = new Date();
+  const startDate = new Date(now.getFullYear() - 1, now.getMonth(), 1);
+
+  // 1. Submit report request
+  const submitRes = await fetch(
+    "https://reporting.api.bingads.microsoft.com/Reporting/v13/GenerateReport/Submit",
+    {
+      method: "POST",
+      headers: reportingHeaders,
+      body: JSON.stringify({
+        ReportRequest: {
+          Type: "AccountPerformanceReportRequest",
+          Aggregation: "Monthly",
+          Columns: ["TimePeriod", "Spend", "Clicks", "Impressions", "Conversions"],
+          ExcludeColumnHeaders: false,
+          ExcludeReportHeader: true,
+          ExcludeReportFooter: true,
+          Format: "Csv",
+          ReturnOnlyCompleteData: false,
+          Scope: {
+            AccountIds: [parseInt(MS_ADS_ACCOUNT_ID)],
+          },
+          Time: {
+            CustomDateRangeStart: {
+              Day: 1,
+              Month: startDate.getMonth() + 1,
+              Year: startDate.getFullYear(),
+            },
+            CustomDateRangeEnd: {
+              Day: now.getDate(),
+              Month: now.getMonth() + 1,
+              Year: now.getFullYear(),
+            },
+          },
+        },
+      }),
+    }
+  );
+
+  const submitData = await submitRes.json();
+  const reportRequestId = submitData.ReportRequestId;
+  if (!reportRequestId) {
+    throw new Error("Failed to submit report: " + JSON.stringify(submitData));
+  }
+
+  // 2. Poll for report completion (max 20s, every 2s)
+  let downloadUrl = null;
+  for (let i = 0; i < 10; i++) {
+    await new Promise((r) => setTimeout(r, 2000));
+
+    const pollRes = await fetch(
+      "https://reporting.api.bingads.microsoft.com/Reporting/v13/GenerateReport/Poll",
+      {
+        method: "POST",
+        headers: reportingHeaders,
+        body: JSON.stringify({ ReportRequestId: reportRequestId }),
+      }
+    );
+
+    const pollData = await pollRes.json();
+    const status = pollData.ReportRequestStatus?.Status;
+
+    if (status === "Success") {
+      downloadUrl = pollData.ReportRequestStatus.ReportDownloadUrl;
+      break;
+    }
+    if (status !== "Pending") {
+      throw new Error("Report failed with status: " + status);
+    }
+  }
+
+  if (!downloadUrl) throw new Error("Report timed out");
+
+  // 3. Download ZIP file
+  const zipRes = await fetch(downloadUrl);
+  const zipBuffer = Buffer.from(await zipRes.arrayBuffer());
+
+  // 4. Unzip and parse CSV
+  const AdmZip = require("adm-zip");
+  const zip = new AdmZip(zipBuffer);
+  const entries = zip.getEntries();
+  const csvContent = entries[0].getData().toString("utf8");
+
+  // 5. Parse CSV into monthly data
+  const lines = csvContent.trim().split("\n");
+  if (lines.length < 2) return [];
+
+  const headers = lines[0].split(",").map((h) => h.replace(/"/g, "").trim());
+  const months = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const values = lines[i].split(",").map((v) => v.replace(/"/g, "").trim());
+    const row = {};
+    headers.forEach((h, idx) => {
+      row[h] = values[idx];
+    });
+
+    months.push({
+      period: row.TimePeriod || row.GregorianDate || "",
+      spend: parseFloat(row.Spend) || 0,
+      clicks: parseInt(row.Clicks) || 0,
+      impressions: parseInt(row.Impressions) || 0,
+      conversions: parseInt(row.Conversions) || 0,
+    });
+  }
+
+  return months;
+}
+
 function json(statusCode, data) {
   return {
     statusCode,
@@ -175,6 +298,12 @@ exports.handler = async function (event) {
         data: { client_emails: body.client_emails },
       });
       return json(200, { success: true });
+    }
+
+    // ── GET SPEND DATA (MS Ads Reporting) ──
+    if (action === "getSpendData") {
+      const months = await fetchMsAdsSpendData();
+      return json(200, { months });
     }
 
     return json(400, { error: "Unknown action" });

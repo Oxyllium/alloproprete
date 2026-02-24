@@ -8,6 +8,9 @@
 [functions]
   directory = "netlify/functions"
 
+[functions."leads"]
+  timeout = 26
+
 # Headers de sécurité et performance
 [[headers]]
   for = "/*"
