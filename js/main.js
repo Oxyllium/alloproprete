@@ -209,20 +209,18 @@
         });
     });
 
-    /* ===== FORM HANDLING ===== */
-    const forms = document.querySelectorAll('.form[data-form-id]');
-
-    forms.forEach(form => {
-        const formId = form.dataset.formId;
-        let formStarted = false;
+    /* ===== FORM HANDLING (Netlify Forms via fetch + redirect) ===== */
+    document.querySelectorAll('form[data-netlify]').forEach(function(form) {
+        var formName = form.getAttribute('name');
+        var formStarted = false;
 
         // Track form start
-        form.querySelectorAll('input, select, textarea').forEach(field => {
+        form.querySelectorAll('input, select, textarea').forEach(function(field) {
             field.addEventListener('focus', function() {
                 if (!formStarted) {
                     formStarted = true;
                     trackEvent('form_start', {
-                        form_id: formId,
+                        form_id: formName,
                         first_field: this.name || this.id,
                         page: window.location.pathname
                     });
@@ -237,30 +235,40 @@
         msclkidField.value = getMsclkid();
         form.appendChild(msclkidField);
 
-        // Form submission
+        // Form submission via fetch (bypasses Netlify's default success page)
         form.addEventListener('submit', function(e) {
-            // Validate form before allowing native submit
-            if (!validateForm(form)) {
-                e.preventDefault();
-                return;
-            }
+            e.preventDefault();
 
-            // Update msclkid value at submit time (in case cookie was set after page load)
+            if (!validateForm(form)) return;
+
+            // Update msclkid at submit time
             msclkidField.value = getMsclkid();
 
-            // Collect form data for tracking
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
+            var formData = new FormData(form);
+            var redirectUrl = form.getAttribute('action') || '/merci';
 
             // Track conversion
             trackEvent('conversion_form_submit', {
-                form_id: formId,
-                prestation_type: data.prestation || '',
-                ville: data.ville || '',
+                form_id: formName,
+                prestation_type: formData.get('prestation') || '',
+                ville: formData.get('ville') || '',
                 page: window.location.pathname
             });
 
-            // Let the form submit natively to Netlify Forms
+            // Submit to Netlify Forms via fetch
+            fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(formData).toString()
+            }).then(function(response) {
+                if (response.ok) {
+                    window.location.href = redirectUrl;
+                } else {
+                    alert('Une erreur est survenue. Veuillez réessayer.');
+                }
+            }).catch(function() {
+                alert('Une erreur est survenue. Veuillez réessayer.');
+            });
         });
     });
 
