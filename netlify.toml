@@ -2,6 +2,7 @@
 # https://docs.netlify.com/configure-builds/file-based-configuration/
 
 [build]
+  command = "python3 build.py"
   publish = "."
 
 [functions]

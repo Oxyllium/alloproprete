@@ -57,7 +57,7 @@
 /77                         /pages/nettoyage-seine-et-marne-77.html     301
 
 # Page merci - URL propre
-/merci                      /pages/merci.html               200
+/merci                      /pages/merci.html               200!
 
 # Anciens URLs ou erreurs courantes (301 = permanent)
 /services                   /                               301
