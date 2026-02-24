@@ -306,6 +306,27 @@ exports.handler = async function (event) {
       return json(200, { months });
     }
 
+    // ── BUDGET (manual spend tracking) ──
+    if (action === "getBudgets") {
+      const data = await gasGet("getBudgets");
+      return json(200, data);
+    }
+
+    if (action === "saveBudget") {
+      const body = JSON.parse(event.body);
+      await gasGet("addBudget", {
+        data: { month: body.month, amount: body.amount, source: body.source },
+      });
+      return json(200, { success: true });
+    }
+
+    if (action === "deleteBudget") {
+      const row = params.row;
+      if (!row) return json(400, { error: "row parameter required" });
+      await gasGet("deleteBudget", { row });
+      return json(200, { success: true });
+    }
+
     return json(400, { error: "Unknown action" });
   } catch (error) {
     console.error("leads function error:", error);

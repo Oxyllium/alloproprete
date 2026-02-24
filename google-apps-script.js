@@ -6,6 +6,7 @@
 
 var SHEET_LEADS = "Leads";
 var SHEET_CONFIG = "Config";
+var SHEET_BUDGET = "Budget";
 
 // ── All requests via GET (POST redirect issues with Google Apps Script) ──
 function doGet(e) {
@@ -20,6 +21,9 @@ function doGet(e) {
   if (action === "updateStatus") return jsonResponse(updateStatus(JSON.parse(e.parameter.data)));
   if (action === "saveConfig") return jsonResponse(saveConfig(JSON.parse(e.parameter.data)));
   if (action === "approveLead") return jsonResponse(approveLead(e.parameter.row, e.parameter.leadType || "", e.parameter.priceTTC || ""));
+  if (action === "getBudgets") return jsonResponse(getBudgets());
+  if (action === "addBudget") return jsonResponse(addBudget(JSON.parse(e.parameter.data)));
+  if (action === "deleteBudget") return jsonResponse(deleteBudget(e.parameter.row));
 
   return jsonResponse({ error: "Unknown action: " + action });
 }
@@ -247,6 +251,57 @@ function saveConfig(body) {
     sheet.getRange(i + 2, 1).setValue(emails[i]);
   }
 
+  return { success: true };
+}
+
+// ── Budget management ──
+function getBudgets() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SHEET_BUDGET);
+  if (!sheet) return { budgets: [] };
+
+  var data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return { budgets: [] };
+
+  var budgets = [];
+  for (var i = 1; i < data.length; i++) {
+    budgets.push({
+      _row: i + 1,
+      month: data[i][0] || "",
+      amount: parseFloat(data[i][1]) || 0,
+      source: data[i][2] || "",
+      created_at: data[i][3] || ""
+    });
+  }
+
+  return { budgets: budgets };
+}
+
+function addBudget(data) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SHEET_BUDGET);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_BUDGET);
+    sheet.getRange(1, 1, 1, 4).setValues([["month", "amount", "source", "created_at"]]);
+  }
+
+  sheet.appendRow([
+    data.month || "",
+    parseFloat(data.amount) || 0,
+    data.source || "Microsoft Ads",
+    new Date().toISOString()
+  ]);
+
+  return { success: true };
+}
+
+function deleteBudget(rowNum) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SHEET_BUDGET);
+  if (!sheet) return { error: "Onglet Budget introuvable" };
+
+  sheet.deleteRow(parseInt(rowNum));
   return { success: true };
 }
 

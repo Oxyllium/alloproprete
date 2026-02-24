@@ -136,6 +136,18 @@
         .roi-positive { color: #059669; font-weight: 600; }
         .roi-negative { color: #dc2626; font-weight: 600; }
 
+        .budget-form { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 20px; margin-bottom: 24px; }
+        .budget-form h3 { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+        .budget-form__row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+        .budget-form__field { display: flex; flex-direction: column; gap: 4px; }
+        .budget-form__field label { font-size: 12px; font-weight: 600; color: #64748b; }
+        .budget-form__field input { padding: 10px 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: inherit; }
+        .budget-form__field input:focus { outline: none; border-color: #059669; }
+        .btn-add-budget { padding: 10px 20px; background: #1a365d; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+        .btn-add-budget:hover { background: #2d4a7c; }
+        .btn-delete-budget { background: none; border: none; color: #dc2626; cursor: pointer; font-size: 13px; padding: 4px 8px; border-radius: 6px; }
+        .btn-delete-budget:hover { background: #fef2f2; }
+
         /* Responsive */
         @media (max-width: 768px) {
             .stats { grid-template-columns: repeat(2, 1fr); }
@@ -189,6 +201,24 @@
                 <div class="roi-stat roi-stat--roi"><div class="roi-stat__number" id="roi-total-roi">—</div><div class="roi-stat__label">ROI</div></div>
                 <div class="roi-stat roi-stat--cpl"><div class="roi-stat__number" id="roi-total-cpl">—</div><div class="roi-stat__label">Coût par lead HT</div></div>
             </div>
+            <div class="budget-form">
+                <h3>Ajouter une dépense</h3>
+                <div class="budget-form__row">
+                    <div class="budget-form__field">
+                        <label>Mois</label>
+                        <input type="month" id="budget-month" value="">
+                    </div>
+                    <div class="budget-form__field">
+                        <label>Montant HT (€)</label>
+                        <input type="number" id="budget-amount" placeholder="0.00" step="0.01" min="0" style="width:120px;">
+                    </div>
+                    <div class="budget-form__field">
+                        <label>Source</label>
+                        <input type="text" id="budget-source" value="Microsoft Ads" style="width:160px;">
+                    </div>
+                    <button class="btn-add-budget" onclick="addBudget()">Ajouter</button>
+                </div>
+            </div>
             <div class="roi-toolbar">
                 <h2>Détail mensuel</h2>
                 <div class="period-group">
@@ -199,7 +229,7 @@
             </div>
             <div class="roi-table-wrap">
                 <div id="roi-table-body">
-                    <div class="loading">Chargement des données MS Ads...</div>
+                    <div class="loading">Chargement des données...</div>
                 </div>
             </div>
         </div>
@@ -526,23 +556,60 @@
     }
 
     // ── ROI Dashboard ──
-    let spendData = null;
+    let budgets = [];
     let roiPeriod = 6;
     let roiLoaded = false;
 
+    // Set default month to current month
+    (function() {
+        const now = new Date();
+        const m = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+        var el = document.getElementById('budget-month');
+        if (el) el.value = m;
+    })();
+
     async function loadROIData() {
-        if (roiLoaded && spendData) {
-            renderROI();
-            return;
-        }
-        document.getElementById('roi-table-body').innerHTML = '<div class="loading">Chargement des données MS Ads...</div>';
+        document.getElementById('roi-table-body').innerHTML = '<div class="loading">Chargement des données...</div>';
         try {
-            const data = await apiCall('getSpendData');
-            spendData = data.months || [];
+            const data = await apiCall('getBudgets');
+            budgets = data.budgets || [];
             roiLoaded = true;
             renderROI();
         } catch (e) {
-            document.getElementById('roi-table-body').innerHTML = '<div class="empty">Erreur de chargement des données MS Ads.</div>';
+            document.getElementById('roi-table-body').innerHTML = '<div class="empty">Erreur de chargement.</div>';
+        }
+    }
+
+    async function addBudget() {
+        const month = document.getElementById('budget-month').value;
+        const amount = parseFloat(document.getElementById('budget-amount').value);
+        const source = document.getElementById('budget-source').value.trim() || 'Microsoft Ads';
+
+        if (!month || !amount || amount <= 0) {
+            toast('Remplissez le mois et le montant', 'error');
+            return;
+        }
+
+        try {
+            await apiCall('saveBudget', 'POST', { month, amount, source });
+            document.getElementById('budget-amount').value = '';
+            toast('Dépense ajoutée', 'success');
+            roiLoaded = false;
+            loadROIData();
+        } catch (e) {
+            toast('Erreur ajout dépense', 'error');
+        }
+    }
+
+    async function deleteBudgetRow(row) {
+        if (!confirm('Supprimer cette dépense ?')) return;
+        try {
+            await apiCall('deleteBudget&row=' + row, 'POST');
+            toast('Dépense supprimée', 'success');
+            roiLoaded = false;
+            loadROIData();
+        } catch (e) {
+            toast('Erreur suppression', 'error');
         }
     }
 
@@ -568,19 +635,24 @@
         return monthlyRev;
     }
 
-    function normalizeSpendMonth(period) {
-        // MS Ads TimePeriod format can vary: "2025-01-01" or "1/1/2025" etc.
-        const d = new Date(period);
-        if (isNaN(d)) return period;
-        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+    function getMonthlySpend() {
+        const monthlySpend = {};
+        budgets.forEach(b => {
+            const key = b.month; // already YYYY-MM
+            monthlySpend[key] = monthlySpend[key] || { amount: 0, rows: [] };
+            monthlySpend[key].amount += b.amount;
+            monthlySpend[key].rows.push(b);
+        });
+        return monthlySpend;
     }
 
     function renderROI() {
         const monthlyRev = getMonthlyRevenue();
+        const monthlySpend = getMonthlySpend();
 
         // Build combined monthly data
         const allMonths = new Set();
-        (spendData || []).forEach(s => allMonths.add(normalizeSpendMonth(s.period)));
+        Object.keys(monthlySpend).forEach(k => allMonths.add(k));
         Object.keys(monthlyRev).forEach(k => allMonths.add(k));
 
         let sortedMonths = Array.from(allMonths).sort().reverse();
@@ -591,36 +663,24 @@
         const cutoffKey = cutoff.getFullYear() + '-' + String(cutoff.getMonth() + 1).padStart(2, '0');
         sortedMonths = sortedMonths.filter(m => m >= cutoffKey);
 
-        // Build spend lookup
-        const spendByMonth = {};
-        (spendData || []).forEach(s => {
-            const key = normalizeSpendMonth(s.period);
-            spendByMonth[key] = s;
-        });
-
         // Calculate totals
-        let totalSpend = 0, totalRevenue = 0, totalLeads = 0, totalClicks = 0;
+        let totalSpend = 0, totalRevenue = 0, totalLeads = 0;
         const rows = sortedMonths.map(month => {
-            const spend = spendByMonth[month]?.spend || 0;
+            const spend = monthlySpend[month]?.amount || 0;
             const rev = monthlyRev[month]?.ht || 0;
             const leads = monthlyRev[month]?.count || 0;
-            const clicks = spendByMonth[month]?.clicks || 0;
-            const impressions = spendByMonth[month]?.impressions || 0;
             const roi = spend > 0 ? ((rev - spend) / spend * 100) : (rev > 0 ? 100 : 0);
-            const cpc = clicks > 0 ? spend / clicks : 0;
+            const budgetRows = monthlySpend[month]?.rows || [];
 
             totalSpend += spend;
             totalRevenue += rev;
             totalLeads += leads;
-            totalClicks += clicks;
 
-            return { month, spend, rev, leads, clicks, impressions, roi, cpc };
+            return { month, spend, rev, leads, roi, budgetRows };
         });
 
         // Find max values for bar widths
-        const maxSpend = Math.max(...rows.map(r => r.spend), 1);
-        const maxRev = Math.max(...rows.map(r => r.rev), 1);
-        const maxVal = Math.max(maxSpend, maxRev);
+        const maxVal = Math.max(...rows.map(r => Math.max(r.spend, r.rev)), 1);
 
         // Render summary cards
         const totalROI = totalSpend > 0 ? ((totalRevenue - totalSpend) / totalSpend * 100) : 0;
@@ -634,7 +694,7 @@
 
         // Render table
         if (rows.length === 0) {
-            document.getElementById('roi-table-body').innerHTML = '<div class="empty">Aucune donnée pour cette période.</div>';
+            document.getElementById('roi-table-body').innerHTML = '<div class="empty">Aucune donnée. Ajoutez vos dépenses pub ci-dessus.</div>';
             return;
         }
 
@@ -642,7 +702,7 @@
 
         let html = `<table>
             <thead><tr>
-                <th>Mois</th><th>Dépenses HT</th><th>Revenus HT</th><th>ROI</th><th>Leads</th><th>Clics</th><th>CPC</th>
+                <th>Mois</th><th>Dépenses HT</th><th>Revenus HT</th><th>ROI</th><th>Leads</th><th></th>
             </tr></thead><tbody>`;
 
         rows.forEach(r => {
@@ -652,14 +712,17 @@
             const spendBarW = (r.spend / maxVal * 100).toFixed(0);
             const revBarW = (r.rev / maxVal * 100).toFixed(0);
 
+            const deleteButtons = r.budgetRows.map(b =>
+                '<button class="btn-delete-budget" onclick="deleteBudgetRow(' + b._row + ')" title="Supprimer ' + b.source + ' — ' + fmtEur(b.amount) + '">✕</button>'
+            ).join('');
+
             html += `<tr>
                 <td><strong>${monthLabel}</strong></td>
                 <td><div class="roi-bar-cell"><span style="min-width:70px">${fmtEur(r.spend)}</span><div class="roi-bar roi-bar--spend" style="width:${spendBarW}%"></div></div></td>
                 <td><div class="roi-bar-cell"><span style="min-width:70px">${fmtEur(r.rev)}</span><div class="roi-bar roi-bar--revenue" style="width:${revBarW}%"></div></div></td>
                 <td><span class="${roiClass}">${r.roi >= 0 ? '+' : ''}${r.roi.toFixed(0)}%</span></td>
                 <td>${r.leads}</td>
-                <td>${r.clicks}</td>
-                <td>${r.cpc > 0 ? fmtEur(r.cpc) : '—'}</td>
+                <td>${deleteButtons}</td>
             </tr>`;
         });
 
@@ -671,8 +734,7 @@
             <td>${fmtEur(totalRevenue)}</td>
             <td><span class="${totalROIClass}">${totalROI >= 0 ? '+' : ''}${totalROI.toFixed(0)}%</span></td>
             <td>${totalLeads}</td>
-            <td>${totalClicks}</td>
-            <td>${totalClicks > 0 ? fmtEur(totalSpend / totalClicks) : '—'}</td>
+            <td></td>
         </tr>`;
 
         html += '</tbody></table>';
