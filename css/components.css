@@ -126,9 +126,10 @@
 }
 
 /* Header CTA (match logo height) */
-.header__cta {
-    padding: var(--space-2) var(--space-6);
+.btn.header__cta {
+    padding: var(--space-2) var(--space-5);
     font-size: var(--text-sm);
+    border-radius: var(--radius-md);
 }
 
 /* Phone */
