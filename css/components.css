@@ -75,18 +75,36 @@
     box-shadow: var(--shadow-md);
 }
 
-.header__inner {
+/* Top bar: logo + phone + CTA */
+.header__top-inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: 80px;
+    justify-content: center;
+    height: 64px;
     gap: var(--space-8);
+}
+
+/* Bottom bar: nav centered */
+.header__bottom {
+    border-top: 1px solid var(--color-gray-100);
+    overflow: hidden;
+    max-height: 48px;
+    transition: max-height 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
+    opacity: 1;
+}
+
+.header--scrolled .header__bottom {
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .header__nav {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: var(--space-1);
+    height: 48px;
 }
 
 .header__link {
@@ -197,7 +215,7 @@
 /* Mega Menu */
 .header__dropdown--mega .mega-menu {
     position: fixed;
-    top: 80px;
+    top: 112px;
     left: 0;
     right: 0;
     background: var(--color-white);
@@ -334,23 +352,48 @@
 }
 
 @media (max-width: 1024px) {
-    .header__inner {
-        height: 70px;
+    .header__top-inner {
+        justify-content: space-between;
+    }
+
+    .header__phone {
+        display: none;
+    }
+
+    .header__cta {
+        display: none;
     }
 
     .header__toggle {
         display: flex;
     }
 
+    /* Reset header__bottom on mobile (don't clip the overlay nav) */
+    .header__bottom {
+        position: static;
+        max-height: none;
+        overflow: visible;
+        border-top: none;
+        opacity: 1;
+    }
+
+    .header--scrolled .header__bottom {
+        max-height: none;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
     .header__nav {
         position: fixed;
-        top: 70px;
+        top: 64px;
         left: 0;
         right: 0;
         bottom: 0;
         background: var(--color-white);
         flex-direction: column;
         align-items: stretch;
+        justify-content: flex-start;
+        height: auto;
         padding: var(--space-6);
         gap: var(--space-2);
         transform: translateX(100%);
@@ -420,22 +463,6 @@
 
     .mega-menu__cta {
         display: none;
-    }
-
-    .header__cta {
-        margin-top: var(--space-4);
-    }
-
-    .header__phone {
-        padding: var(--space-4);
-        font-size: var(--text-base);
-        color: var(--color-secondary);
-        border-top: 1px solid var(--color-gray-100);
-        margin-top: var(--space-2);
-    }
-
-    .header__phone-number {
-        font-size: var(--text-lg);
     }
 }
 

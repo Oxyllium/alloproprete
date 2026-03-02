@@ -188,12 +188,12 @@
 
 /* Padding for sticky header */
 .site-main {
-    padding-top: 80px;
+    padding-top: 112px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .site-main {
-        padding-top: 70px;
+        padding-top: 64px;
     }
 }
 
