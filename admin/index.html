@@ -702,7 +702,7 @@
 
         let html = `<table>
             <thead><tr>
-                <th>Mois</th><th>Dépenses HT</th><th>Revenus HT</th><th>ROI</th><th>Leads</th><th></th>
+                <th>Mois</th><th>Dépenses HT</th><th>Prix vente HT</th><th>Revenus HT</th><th>ROI</th><th>Leads</th><th></th>
             </tr></thead><tbody>`;
 
         rows.forEach(r => {
@@ -716,9 +716,12 @@
                 '<button class="btn-delete-budget" onclick="deleteBudgetRow(' + b._row + ')" title="Supprimer ' + b.source + ' — ' + fmtEur(b.amount) + '">✕</button>'
             ).join('');
 
+            const avgPrice = r.leads > 0 ? r.rev / r.leads : 0;
+
             html += `<tr>
                 <td><strong>${monthLabel}</strong></td>
                 <td><div class="roi-bar-cell"><span style="min-width:70px">${fmtEur(r.spend)}</span><div class="roi-bar roi-bar--spend" style="width:${spendBarW}%"></div></div></td>
+                <td>${r.leads > 0 ? fmtEur(avgPrice) : '—'}</td>
                 <td><div class="roi-bar-cell"><span style="min-width:70px">${fmtEur(r.rev)}</span><div class="roi-bar roi-bar--revenue" style="width:${revBarW}%"></div></div></td>
                 <td><span class="${roiClass}">${r.roi >= 0 ? '+' : ''}${r.roi.toFixed(0)}%</span></td>
                 <td>${r.leads}</td>
@@ -728,9 +731,11 @@
 
         // Total row
         const totalROIClass = totalROI >= 0 ? 'roi-positive' : 'roi-negative';
+        const avgTotalPrice = totalLeads > 0 ? totalRevenue / totalLeads : 0;
         html += `<tr style="background:#f8fafc;font-weight:600;">
             <td>Total</td>
             <td>${fmtEur(totalSpend)}</td>
+            <td>${totalLeads > 0 ? fmtEur(avgTotalPrice) : '—'}</td>
             <td>${fmtEur(totalRevenue)}</td>
             <td><span class="${totalROIClass}">${totalROI >= 0 ? '+' : ''}${totalROI.toFixed(0)}%</span></td>
             <td>${totalLeads}</td>
