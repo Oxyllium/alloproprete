@@ -87,7 +87,6 @@
 /* Bottom bar: nav centered */
 .header__bottom {
     border-top: 1px solid var(--color-gray-100);
-    overflow: hidden;
     max-height: 48px;
     transition: max-height 0.3s var(--ease-out), opacity 0.3s var(--ease-out);
     opacity: 1;
@@ -96,6 +95,7 @@
 .header--scrolled .header__bottom {
     max-height: 0;
     opacity: 0;
+    overflow: hidden;
     pointer-events: none;
 }
 
@@ -123,6 +123,12 @@
 
 .header__link--active {
     color: var(--color-secondary);
+}
+
+/* Header CTA (match logo height) */
+.header__cta {
+    padding: var(--space-2) var(--space-6);
+    font-size: var(--text-sm);
 }
 
 /* Phone */
@@ -1092,8 +1098,8 @@
     right: 0;
     width: 100%;
     z-index: var(--z-fixed);
-    background: var(--color-white);
-    padding: var(--space-4) var(--space-5);
+    background: var(--color-secondary);
+    padding: var(--space-3) var(--space-4);
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -1109,18 +1115,12 @@
     justify-content: center;
     gap: var(--space-3);
     width: 100%;
-    padding: var(--space-4) var(--space-6);
-    background: var(--color-secondary);
+    padding: var(--space-3) var(--space-6);
+    background: transparent;
     color: var(--color-white);
     font-size: var(--text-lg);
     font-weight: 600;
-    border-radius: var(--radius-lg);
     text-decoration: none;
-    transition: background var(--duration-fast) var(--ease-out);
-}
-
-.mobile-sticky-phone:hover {
-    background: var(--color-secondary-dark, var(--color-primary));
 }
 
 .mobile-sticky-phone svg {
