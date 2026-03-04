@@ -1335,6 +1335,33 @@
     position: relative;
 }
 
+.cta-banner__reassurance {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4) var(--space-6);
+    margin-bottom: var(--space-8);
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-banner__reassurance-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--color-white);
+    font-size: var(--text-base);
+    font-weight: 500;
+}
+
+.cta-banner__reassurance-item img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+    flex-shrink: 0;
+}
+
 @media (max-width: 768px) {
     .cta-banner {
         padding: var(--space-8) var(--space-6);
@@ -1342,6 +1369,16 @@
 
     .cta-banner__title {
         font-size: var(--text-3xl);
+    }
+
+    .cta-banner__reassurance {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+        max-width: none;
+    }
+
+    .cta-banner__reassurance-item {
+        font-size: var(--text-sm);
     }
 }
 
