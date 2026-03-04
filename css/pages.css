@@ -1255,12 +1255,6 @@
     box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
 }
 
-.devis-process__icon {
-    display: block;
-    margin: 0 auto var(--space-3);
-    opacity: 0.6;
-}
-
 .devis-process__step h3 {
     font-size: var(--text-lg);
     font-weight: 600;
