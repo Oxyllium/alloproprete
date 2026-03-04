@@ -962,19 +962,46 @@
 
 .hero-devis__trust-stats {
     display: flex;
-    gap: var(--space-8);
+    gap: var(--space-4);
 }
 
 .hero-devis__stat {
-    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-4);
+    flex: 1;
+}
+
+.hero-devis__stat-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-devis__stat-icon img {
+    width: 22px;
+    height: 22px;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
 }
 
 .hero-devis__stat-number {
     display: block;
     font-family: var(--font-heading);
-    font-size: var(--text-2xl);
+    font-size: var(--text-xl);
     font-weight: 700;
     color: var(--color-secondary-light);
+    line-height: 1.2;
 }
 
 .hero-devis__stat-label {
