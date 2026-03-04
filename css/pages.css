@@ -935,6 +935,13 @@
     color: var(--color-secondary-light);
 }
 
+.hero-devis__feature-icon img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+}
+
 .hero-devis__feature-text strong {
     display: block;
     font-size: var(--text-sm);
@@ -1141,6 +1148,16 @@
     color: var(--color-white);
 }
 
+.service-quick-card__icon img {
+    width: 32px;
+    height: 32px;
+    transition: filter 0.3s ease;
+}
+
+.service-quick-card:hover .service-quick-card__icon img {
+    filter: brightness(0) invert(1);
+}
+
 .service-quick-card h3 {
     font-size: var(--text-base);
     font-weight: 600;
@@ -1211,6 +1228,12 @@
     box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
 }
 
+.devis-process__icon {
+    display: block;
+    margin: 0 auto var(--space-3);
+    opacity: 0.6;
+}
+
 .devis-process__step h3 {
     font-size: var(--text-lg);
     font-weight: 600;
@@ -1236,7 +1259,7 @@
 @media (max-width: 1024px) {
     .hero-devis__grid {
         grid-template-columns: 1fr;
-        gap: var(--space-10);
+        gap: var(--space-6);
     }
 
     .hero-devis__content {
@@ -1271,20 +1294,29 @@
 
 @media (max-width: 768px) {
     .hero-devis {
-        padding: var(--space-10) 0 var(--space-14);
+        padding: var(--space-6) 0 var(--space-8);
     }
 
     .hero-devis__title {
-        font-size: var(--text-3xl);
+        font-size: var(--text-2xl);
+        margin-bottom: var(--space-2);
     }
 
-    .hero-devis__trust-stats {
-        flex-wrap: wrap;
-        gap: var(--space-4);
+    .hero-devis__subtitle {
+        font-size: var(--text-base);
+        margin-bottom: var(--space-4);
     }
 
-    .hero-devis__stat {
-        text-align: center;
+    .hero-devis__badge {
+        margin-bottom: var(--space-3);
+    }
+
+    .hero-devis__features {
+        display: none;
+    }
+
+    .hero-devis__trust {
+        display: none;
     }
 
     .services-quick-grid {
