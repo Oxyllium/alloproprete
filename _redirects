@@ -63,3 +63,14 @@
 /services                   /                               301
 /accueil                    /                               301
 /home                       /                               301
+
+# ===== ENGLISH VERSION =====
+# Clean URLs for /en/ pages (rewrites to actual HTML files, 200 = same URL in browser)
+/en                         /en/                            301
+/en/quote                   /pages/en/quote.html            200
+/en/contact                 /pages/en/contact.html          200
+/en/about-us                /pages/en/about-us.html         200
+/en/office-cleaning         /pages/en/office-cleaning.html  200
+/en/legal-notice            /pages/en/legal-notice.html     200
+/en/privacy-policy          /pages/en/privacy-policy.html   200
+/en/thank-you               /pages/en/thank-you.html        200

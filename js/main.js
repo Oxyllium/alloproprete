@@ -74,6 +74,65 @@
         });
     });
 
+    /* ===== LANGUAGE SWITCHER ===== */
+    (function initLangSwitcher() {
+        var switcher = document.querySelector('.lang-switcher');
+        if (!switcher) return;
+        var toggle = switcher.querySelector('.lang-switcher__toggle');
+        var menu = switcher.querySelector('.lang-switcher__menu');
+        if (!toggle || !menu) return;
+
+        toggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var expanded = toggle.getAttribute('aria-expanded') === 'true';
+            toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        });
+
+        // Close on outside click
+        document.addEventListener('click', function(e) {
+            if (!switcher.contains(e.target)) {
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Smart URL mapping: FR <-> EN equivalents
+        var urlMap = {
+            // FR -> EN
+            '/': '/en/',
+            '/devis-nettoyage': '/en/quote',
+            '/contact': '/en/contact',
+            '/qui-sommes-nous': '/en/about-us',
+            '/mentions-legales': '/en/legal-notice',
+            '/politique-de-confidentialite': '/en/privacy-policy',
+            '/merci': '/en/thank-you',
+            '/entretien-bureaux': '/en/office-cleaning',
+            '/entretien-bureaux/': '/en/office-cleaning',
+            // EN -> FR (reverse)
+            '/en/': '/',
+            '/en': '/',
+            '/en/quote': '/devis-nettoyage',
+            '/en/contact': '/contact',
+            '/en/about-us': '/qui-sommes-nous',
+            '/en/legal-notice': '/mentions-legales',
+            '/en/privacy-policy': '/politique-de-confidentialite',
+            '/en/thank-you': '/merci',
+            '/en/office-cleaning': '/entretien-bureaux'
+        };
+
+        var item = menu.querySelector('.lang-switcher__item');
+        if (item) {
+            item.addEventListener('click', function(e) {
+                var path = window.location.pathname.replace(/\/$/, '') || '/';
+                var mapped = urlMap[path] || urlMap[path + '/'] || urlMap[window.location.pathname];
+                if (mapped) {
+                    e.preventDefault();
+                    window.location.href = mapped;
+                }
+                // else: fallback to the default href (home of target lang)
+            });
+        }
+    })();
+
     // Close mobile menu when any nav link (except dropdown triggers) is clicked
     nav?.querySelectorAll('a:not(.header__dropdown-trigger)').forEach(link => {
         link.addEventListener('click', function() {
@@ -126,10 +185,10 @@
     })();
 
     /* ===== ANCHOR SCROLL HANDLER ===== */
-    // Fix iOS Safari scroll trapping on #formulaire anchor
-    if (window.location.hash === '#formulaire') {
+    // Fix iOS Safari scroll trapping on form anchors
+    if (window.location.hash === '#formulaire' || window.location.hash === '#form') {
         document.body.style.overflow = '';
-        const formEl = document.getElementById('formulaire');
+        const formEl = document.getElementById(window.location.hash.substring(1));
         if (formEl) {
             // Override native anchor scroll with JS-controlled scroll
             requestAnimationFrame(function() {
@@ -211,7 +270,7 @@
 
     /* ===== FORM HANDLING (Netlify Forms via fetch + redirect) ===== */
     // Netlify strips data-netlify at build time, so target forms by action URL
-    document.querySelectorAll('form[action="/merci"]').forEach(function(form) {
+    document.querySelectorAll('form[action="/merci"], form[action="/en/thank-you"]').forEach(function(form) {
         var formName = form.getAttribute('name');
         var formStarted = false;
 
@@ -264,18 +323,21 @@
             });
 
             // Submit to Netlify Forms via fetch, then redirect
+            var successUrl = form.getAttribute('action') || '/merci';
+            var isEn = successUrl.indexOf('/en/') === 0;
+            var errorMsg = isEn ? 'An error occurred. Please try again.' : 'Une erreur est survenue. Veuillez réessayer.';
             fetch('/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams(formData).toString()
             }).then(function(response) {
                 if (response.ok) {
-                    window.location.href = '/merci';
+                    window.location.href = successUrl;
                 } else {
-                    alert('Une erreur est survenue. Veuillez réessayer.');
+                    alert(errorMsg);
                 }
             }).catch(function() {
-                alert('Une erreur est survenue. Veuillez réessayer.');
+                alert(errorMsg);
             });
         });
     });
@@ -283,6 +345,16 @@
     function validateForm(form) {
         let isValid = true;
         const requiredFields = form.querySelectorAll('[required]');
+        const isEn = document.documentElement.lang === 'en';
+        const msgs = isEn ? {
+            required: 'This field is required',
+            email: 'Please enter a valid email address',
+            phone: 'Please enter a valid phone number'
+        } : {
+            required: 'Ce champ est obligatoire',
+            email: 'Veuillez entrer une adresse email valide',
+            phone: 'Veuillez entrer un numéro de téléphone valide'
+        };
 
         // Clear previous errors
         form.querySelectorAll('.form__error').forEach(error => {
@@ -295,13 +367,13 @@
         requiredFields.forEach(field => {
             if (!field.value.trim()) {
                 isValid = false;
-                showFieldError(field, 'Ce champ est obligatoire');
+                showFieldError(field, msgs.required);
             } else if (field.type === 'email' && !isValidEmail(field.value)) {
                 isValid = false;
-                showFieldError(field, 'Veuillez entrer une adresse email valide');
+                showFieldError(field, msgs.email);
             } else if (field.type === 'tel' && !isValidPhone(field.value)) {
                 isValid = false;
-                showFieldError(field, 'Veuillez entrer un numéro de téléphone valide');
+                showFieldError(field, msgs.phone);
             }
         });
 

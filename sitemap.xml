@@ -695,4 +695,36 @@
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
+
+    <!-- English version -->
+    <url>
+        <loc>https://alloproprete.fr/en/</loc>
+        <lastmod>2026-04-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://alloproprete.fr/en/quote</loc>
+        <lastmod>2026-04-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://alloproprete.fr/en/contact</loc>
+        <lastmod>2026-04-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://alloproprete.fr/en/about-us</loc>
+        <lastmod>2026-04-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://alloproprete.fr/en/office-cleaning</loc>
+        <lastmod>2026-04-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
 </urlset>
