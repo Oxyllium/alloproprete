@@ -40,7 +40,7 @@ def main():
     print(f'Loaded {len(includes)} includes: {", ".join(sorted(includes.keys()))}')
 
     count = 0
-    patterns = ['*.html', 'pages/**/*.html']
+    patterns = ['*.html', 'pages/**/*.html', 'en/**/*.html']
     for pattern in patterns:
         for filepath in sorted(glob.glob(pattern, recursive=True)):
             if filepath.startswith('_includes'):
